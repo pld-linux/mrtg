@@ -41,10 +41,8 @@ case "$1" in
 	;;
   reload)
 	msg_reloading mrtg
-	busy
 	killproc mrtg -HUP
 	RETVAL=$?
-	[ $RETVAL -eq 0 ] && ok || died
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|status}"
