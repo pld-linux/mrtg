@@ -33,7 +33,7 @@ eval `perl '-V:installarchlib'`
 CFLAGS="$RPM_OPT_FLAGS -I$installarchlib/CORE" \
 ./configure %{_target} \
 	--prefix=/usr \
-	--with-gd-lib=/usr/lib \
+	--with-gd-lib=%{_libdir} \
 	--with-gd-inc=/usr/include
 make
 
@@ -48,8 +48,8 @@ install -d $RPM_BUILD_ROOT/$installarchlib
 install	%SOURCE1	$RPM_BUILD_ROOT/etc
 ln -s   /etc/mrtg.cfg	$RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
 install images/*        $RPM_BUILD_ROOT/home/httpd/html/mrtg/
-install run/cfgmaker	$RPM_BUILD_ROOT/usr/lib/mrtg
-install run/indexmaker  $RPM_BUILD_ROOT/usr/lib/mrtg
+install run/cfgmaker	$RPM_BUILD_ROOT%{_libdir}/mrtg
+install run/indexmaker  $RPM_BUILD_ROOT%{_libdir}/mrtg
 install run/mrtg        $RPM_BUILD_ROOT/usr/bin
 install -s run/rateup   $RPM_BUILD_ROOT/usr/bin
 install run/*.pm        $RPM_BUILD_ROOT/$installarchlib
@@ -68,12 +68,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc contrib.tar.gz doc/*.txt.gz doc/*.cfg.gz
 %dir /home/httpd/html/mrtg
-%dir /usr/lib/mrtg
+%dir %{_libdir}/mrtg
 %config(noreplace) /etc/mrtg.cfg
 %attr(644,root,root) /home/httpd/html/mrtg/*
-%attr(644,root,root) /usr/lib/perl5/*/*/*.pm
+%attr(644,root,root) %{_libdir}/perl5/*/*/*.pm
 %attr(755,root,root) /usr/bin/*
-%attr(755,root,root) /usr/lib/mrtg/*
+%attr(755,root,root) %{_libdir}/mrtg/*
 %attr(640,root,root) /etc/crontab.d/mrtg
 
 %changelog
