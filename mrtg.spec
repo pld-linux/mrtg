@@ -3,7 +3,7 @@ Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.9.12
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Group(de):	Applikationen/Netzwerkwesen
