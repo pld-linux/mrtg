@@ -75,33 +75,3 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
 %attr(640,root,root) /etc/crontab.d/mrtg
-
-%changelog
-* Sat Feb 27 1999 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
-- upgreaded to 2.6.6
-
-* Sun Feb 21 1999 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
-- PLDized
-
-* Fri Oct 08 1998 Michael Maher <mike@redhat.com>
-- built package for 5.2 powertools.
-
-* Fri Jun 02 1998 Michael Maher <mike@redhat.com>
-- fixed bugs found in package. 
-
-* Fri May 22 1998 Michael Maher <mike@redhat.com>
-- updated package
-- checked package looks ok
-
-* Sun Dec  7 1997 Otto Hammersmith <otto@redhat.com>
-- added WorkDir to mrtg.cfg
-
-* Tue Nov 25 1997 Otto Hammersmith <otto@redhat.com>
-- addeed patch to clean up paths to perl in the contrib directory.  ugh
-
-* Mon Nov 17 1997 Otto Hammersmith <otto@redhat.com>
-- updated version to 2.5.1
-- change buildroot to /var/tmp from /tmp
-
-* Mon Apr 28 1997 Michael Fulbright <msf@redhat.com>
-- Updated to 2.2 and changed to build with a Buildroot.
