@@ -12,12 +12,12 @@ Summary(pl):	MRTG - generator obrazСw obci╠©enia Ё╠cz
 Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
-Version:	2.10.12
-Release:	4
+Version:	2.10.13
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
-# Source0-md5:	a83d13e6c3fd8f42d2f633ee7ed54e02
+# Source0-md5:	978f2b55d74e6485662c9bd9a65c2f23
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
@@ -153,9 +153,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root) %{perl_sitelib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
-%{_mandir}/man1/*
 %attr(751,root,root) %dir /var/log/mrtg
 %attr(751,root,root) %dir /var/log/archiv/mrtg
+%{_mandir}/man1/*
 
 %files cron
 %defattr(644,root,root,755)
