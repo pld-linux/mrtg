@@ -1,0 +1,16 @@
+diff -ur mrtg-2.9.11pre1.orig/Makefile.in mrtg-2.9.11pre1/Makefile.in
+--- mrtg-2.9.11pre1.orig/Makefile.in	Sat Apr  7 17:52:05 2001
++++ mrtg-2.9.11pre1/Makefile.in	Fri Apr 13 20:45:40 2001
+@@ -39,11 +39,9 @@
+ 	$(MKINSTALLDIRS) $(prefix)/bin
+ 	for x in bin/mrtg bin/cfgmaker bin/indexmaker bin/rateup; do \
+ 	  $(INSTALL) -m 755 $$x $(prefix)/bin; done
+-	$(MKINSTALLDIRS) $(prefix)/lib/mrtg2/Pod
++	$(MKINSTALLDIRS) $(prefix)/lib/mrtg2
+ 	for x in lib/mrtg2/*.pm; do \
+ 	  $(INSTALL) -m 644 $$x $(prefix)/lib/mrtg2; done
+-	for x in lib/mrtg2/Pod/*.pm; do \
+-	  $(INSTALL) -m 644 $$x $(prefix)/lib/mrtg2/Pod; done
+ 	for x in images/*.gif images/*.png; do \
+ 	  $(INSTALL) -m 644 $$x $(prefix)/lib/mrtg2; done
+ 	$(MKINSTALLDIRS) $(prefix)/doc/mrtg2
