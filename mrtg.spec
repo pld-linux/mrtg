@@ -12,7 +12,7 @@ Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.10.14
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
@@ -23,6 +23,7 @@ Source3:	%{name}.sysconfig
 Source4:	%{name}.logrotate
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
+Patch2:		%{name}-typos.patch
 URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -94,6 +95,7 @@ Pliki pozwalaj╠ce uruchamiaФ mrtg z poziomu rc-scripts.
 %patch0 -p1
 #%patch1 -p1
 rm -rf lib/mrtg2/Pod
+%patch2 -p1
 
 %build
 %{__aclocal}
