@@ -50,7 +50,7 @@ rm -rf lib/mrtg2/Pod
 
 %build
 aclocal
-autoconf
+%{__autoconf}
 %configure
 %{__make}
 
