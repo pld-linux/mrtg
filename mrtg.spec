@@ -11,6 +11,7 @@ Group(pl):	Aplikacje/Sieciowe
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
 Source1:	%{name}.cfg
 Patch0:		%{name}.path.patch
+Patch1:		%{name}-use-perl-pod.patch
 BuildRequires:	gd-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng >= 1.0.8
@@ -19,7 +20,6 @@ URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 %requires_eq    perl
 Requires:	/etc/cron.d
 BuildRequires:	rrdtool
-BuildConflicts:	perl-PodParser
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -34,7 +34,9 @@ zawieraj±ce obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
 
 %prep
 %setup -q
-%patch -p1
+%patch0 -p1
+%patch1 -p1
+rm -rf lib/mrtg2/Pod
 
 %build
 %configure
