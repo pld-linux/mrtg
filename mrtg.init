@@ -11,13 +11,23 @@
 . /etc/rc.d/init.d/functions
 
 RETVAL=0
+
+# Initial values:
+CONFIGDIR="/etc/mrtg"
+CONFIGS="mrtg.cfg"
+
+# Get service config
+[ -f /etc/sysconfig/mrtg ] && . /etc/sysconfig/mrtg
+
 # See how we were called.
 case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/mrtg ]; then
 		msg_starting mrtg
-		daemon mrtg /etc/mrtg/mrtg.cfg
+		for i in $CONFIGS; do
+		    daemon mrtg $CONFIGDIR/$i
+		done
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
 	else
