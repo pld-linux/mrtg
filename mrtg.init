@@ -2,10 +2,10 @@
 #
 # mrtg		mrtg loggerr
 #
-# chkconfig:    345 86 14
-# description:  mrtg is a network traffic logging daemon.
-# processname:  mrtg
-# pidfile:      /var/run/mrtg.pid
+# chkconfig:	345 86 14
+# description:	mrtg is a network traffic logging daemon.
+# processname:	mrtg
+# pidfile:	/var/run/mrtg.pid
 
 # Source function library
 . /etc/rc.d/init.d/functions
@@ -14,35 +14,37 @@
 case "$1" in
   start)
 	# Check if the service is already running?
-        if [ ! -f /var/lock/subsys/mrtg ]; then
+	if [ ! -f /var/lock/subsys/mrtg ]; then
 		msg_starting mrtg
 		daemon mrtg /etc/mrtg/mrtg.cfg
-	        RETVAL=$?
-    		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
 	else
-        	msg_already_running mrtg
-	        exit 1
+		msg_already_running mrtg
+		exit 1
 	fi
 	;;
   stop)
-        # Stop daemons.
+	# Stop daemons.
 	if [ -f /var/lock/subsys/mrtg ]; then
-                msg_stopping mrtg
-                killproc mrtg
-                rm -f /var/lock/subsys/mrtg /var/run/mrtg.pid >/dev/null 2>&1        
+		msg_stopping mrtg
+		killproc mrtg
+		rm -f /var/lock/subsys/mrtg /var/run/mrtg.pid >/dev/null 2>&1	
 	else
 		msg_not_running mrtg
-	        exit 1
+		exit 1
 	fi
 	;;
   restart)
 	$0 stop
 	$0 start
 	;;
-   reload)
-   	msg_reloading mrtg
+  reload)
+	msg_reloading mrtg
+	busy
 	killproc mrtg -HUP
 	RETVAL=$?
+	[ $RETVAL -eq 0 ] && ok || died
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|status}"
