@@ -4,22 +4,22 @@ Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.9.2
 Release:	1
+License:	GPL
 Group:		Applications/Networking
 Group(de):	Applikationen/Netzwerkwesen
 Group(pl):	Aplikacje/Sieciowe
-License:	GPL
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
 Source1:	%{name}.cfg
 Patch0:		%{name}.path.patch
-Url:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
-Requires:	perl >= 5.004
-Requires:	/etc/cron.d
-Requires:	perl-PodParser
-Requires:	rrdtool
 BuildRequires:	gd-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl => 5.004
+URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
+Requires:	perl >= 5.004
+Requires:	/etc/cron.d
+Requires:	perl-PodParser
+Requires:	rrdtool
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -34,7 +34,7 @@ zawieraj±ce obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
 
 %prep
 %setup -q
-%patch -p1 -b .path
+%patch -p1
 
 %build
 %configure
@@ -42,7 +42,6 @@ zawieraj±ce obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/httpd/html/mrtg} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%perl_sitearch}
 
