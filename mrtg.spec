@@ -16,7 +16,7 @@ Requires:	/etc/cron.d
 BuildRequires:	gd-devel
 BuildRequires:	zlib-devel
 BuildRequires:  libpng-devel
-Buildroot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The Multi Router Traffic Grapher (MRTG) is a tool to monitor the traffic
