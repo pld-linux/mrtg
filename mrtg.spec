@@ -31,7 +31,7 @@ obrazki GIF przedstawiaj±ce aktualne obci±¿enie ³±cz.
 %build
 eval `perl '-V:installarchlib'`
 CFLAGS="$RPM_OPT_FLAGS -I$installarchlib/CORE" \
-./configure %{_target} \
+./configure %{_target_platform} \
 	--prefix=/usr \
 	--with-gd-lib=%{_libdir} \
 	--with-gd-inc=%{_includedir}
