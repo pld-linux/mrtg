@@ -2,8 +2,8 @@
 Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
-Version:	2.8.12
-Release: 2
+Version:	2.9.0
+Release:	1
 Group:		Applications/Networking
 Group(pl):	Aplikacje/Sieciowe
 Copyright:	GPL
@@ -40,23 +40,23 @@ LDFLAGS="-s"; export LDFLAGS
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/{etc/cron.d,home/httpd/html/mrtg} \
+install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/httpd/html/mrtg} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%perl_sitearch}
 
-install	%SOURCE1 $RPM_BUILD_ROOT/etc
-ln -s   /etc/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
+install	%SOURCE1 $RPM_BUILD_ROOT/etc/mrtg
+ln -s   /etc/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
 install images/* $RPM_BUILD_ROOT/home/httpd/html/mrtg/
 
-install run/{cfgmaker,cfgmaker_ip,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
-install run/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
-install run/*.pm $RPM_BUILD_ROOT/%{perl_sitearch}
+install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
+install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
+install lib/mrtg2/*.pm $RPM_BUILD_ROOT/%{perl_sitearch}
 
 tar -cf contrib.tar contrib
-gzip -9nf contrib.tar doc/*.txt doc/*.cfg
+gzip -9nf contrib.tar doc/*.txt
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; %{_bindir}/mrtg /home/httpd/html/mrtg/mrtg.cfg
-*/5 * * * * root umask 022; %{_libdir}/mrtg/indexmaker -t 'Statistics' -r '.' -o /home/httpd/html/mrtg/index.html /etc/mrtg.cfg
+*/5 * * * * root umask 022; %{_libdir}/mrtg/indexmaker -t 'Statistics' -r '.' -o /home/httpd/html/mrtg/index.html /etc/mrtg/mrtg.cfg
 EOF
 
 %clean
@@ -67,7 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc contrib.tar.gz doc/*.txt.gz doc/*.cfg.gz
 %dir /home/httpd/html/mrtg
 %dir %{_libdir}/mrtg
-%config(noreplace) /etc/mrtg.cfg
+%config(noreplace) /etc/mrtg/mrtg.cfg
 %attr(644,root,root) /home/httpd/html/mrtg/*
 %attr(644,root,root) %perl_sitearch/*.pm
 %attr(755,root,root) %{_bindir}/*
