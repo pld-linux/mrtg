@@ -12,7 +12,7 @@ Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.10.13
-Release:	4
+Release:	5
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
@@ -28,8 +28,9 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gd-devel >= 2.0.1
 BuildRequires:	libpng >= 1.0.8
-BuildRequires:	perl-devel >= 5.6.1
+BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	perl-SNMP_Session
+BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rrdtool
 PreReq:		rc-scripts >= 0.2.0
 Requires:	perl(SNMP_util) >= 0.97
