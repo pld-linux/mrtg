@@ -3,7 +3,7 @@ Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.9.17
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Group(de):	Applikationen/Netzwerkwesen
@@ -15,6 +15,7 @@ Patch1:		%{name}-use-perl-pod.patch
 BuildRequires:	gd-devel
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl-devel >= 5.6.1
+BuildRequires:	perl(SNMP_Session)
 URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 Requires:	/etc/cron.d
 BuildRequires:	rrdtool
@@ -51,7 +52,8 @@ install images/* $RPM_BUILD_ROOT/home/httpd/html/mrtg/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
-install lib/mrtg2/*.pm $RPM_BUILD_ROOT/%{perl_sitelib}
+install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_sitelib}
+install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_sitelib}
 
 tar -cf contrib.tar contrib
 gzip -9nf contrib.tar
