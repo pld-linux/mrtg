@@ -71,7 +71,6 @@ install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1/
 
 
 tar -cf contrib.tar contrib
-gzip -9nf contrib.tar
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg %{_sysconfdir}/mrtg/mrtg.cfg
@@ -83,11 +82,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc contrib.tar.gz doc/*.txt
+%doc contrib.tar doc/*.txt
 %dir /home/services/httpd/html/mrtg
 %dir %{_libdir}/mrtg
-%attr(750,root,root) %dir %{_sysconfdir}/mrtg
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
+%attr(751,root,root) %dir %{_sysconfdir}/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
 %attr(644,root,root) /home/services/httpd/html/mrtg/*
 %attr(644,root,root) %{perl_sitelib}/*.pm
 %attr(755,root,root) %{_bindir}/*
