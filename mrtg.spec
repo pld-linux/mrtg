@@ -3,7 +3,7 @@ Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG - generator obrazów obci±¿enia ³±cz
 Name:		mrtg
 Version:	2.9.17
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Networking
 Group(de):	Applikationen/Netzwerkwesen
