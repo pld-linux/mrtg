@@ -21,6 +21,7 @@ Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{versio
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
+Source4:	%{name}.logrotate
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
 URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
@@ -102,12 +103,14 @@ rm -rf lib/mrtg2/Pod
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1,/var/log/mrtg,/var/log/archiv/mrtg}
+install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1} \
+	$RPM_BUILD_ROOT{/var/log/mrtg,/var/log/archiv/mrtg}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d/mrtg
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
 install images/* $RPM_BUILD_ROOT%{_htmldir}
 
@@ -151,6 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(751,root,root) %dir %{_sysconfdir}/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/mrtg
 %attr(644,root,root) %{_htmldir}/*
 %attr(644,root,root) %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
