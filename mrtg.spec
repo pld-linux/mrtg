@@ -1,6 +1,6 @@
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
-Summary(pl):	MRTG
+Summary(pl):	MRTG - generator obrazów obci±¿enia ³±cz
 Name:		mrtg
 Version:	2.9.17
 Release:	3
@@ -12,13 +12,15 @@ Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar
 Source1:	%{name}.cfg
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
+URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 BuildRequires:	gd-devel >= 2.0.1
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl-devel >= 5.6.1
 BuildRequires:	perl(SNMP_Session)
-URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
-Requires:	/etc/cron.d
 BuildRequires:	rrdtool
+BuildRequires:	autoconf
+BuildRequires:	automake
+Requires:	/etc/cron.d
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -49,7 +51,7 @@ install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/httpd/html/mrtg} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib}}
 
 install %SOURCE1 $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
-ln -s %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
+ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
 install images/* $RPM_BUILD_ROOT/home/httpd/html/mrtg/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
