@@ -19,13 +19,13 @@ Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 The Multi Router Traffic Grapher (MRTG) is a tool to monitor the traffic
-load on network-links. MRTG generates HTML pages containing GIF
+load on network-links. MRTG generates HTML pages containing PNG
 images which provide a LIVE visual representation of this traffic.
 
 %description -l pl
 Multi Router Traffic Grapher (MRTG) to narzêdzie s³u¿±ce do monitorowania
 obci±¿enia ³±cz sieciowych. MRTG generuje strony HTML zawieraj±ce
-obrazki GIF przedstawiaj±ce aktualne obci±¿enie ³±cz.
+obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
 
 %prep
 %setup -q
