@@ -49,7 +49,7 @@ realística deste gráfico.
 rm -rf lib/mrtg2/Pod
 
 %build
-aclocal
+%{__aclocal}
 %{__autoconf}
 %configure
 %{__make}
