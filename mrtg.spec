@@ -5,7 +5,7 @@ Version:	2.8.6
 Release:	1
 Group:		Applications/Networking
 Group(pl):	Aplikacje/Sieciowe
-Copyright:	distributable
+Copyright:	GPL
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
 Source1:	mrtg.cfg
 Patch:		mrtg.path.patch
