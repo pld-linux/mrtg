@@ -1,9 +1,12 @@
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
+Summary(es):	Herramienta para hacer gráficos de empleo en la red
 Summary(pl):	MRTG - generator obrazów obci±¿enia ³±cz
+Summary(pt_BR):	Ferramenta para fazer gráficos do uso da rede
+Summary(ru):	MRTG - ĞÒÏÇÒÁÍÍÁ ÉÚÏÂÒÁÖÅÎÉÑ ÇÒÁÆÆÉËÏ×, ÉÚÏÂÒÁÖÁÀİÉÈ ÔÒÁÆÆÉË ÎÁ ÍÎÏÖÅÓÔ×Å ÒÏÕÔÅÒÏ×
 Name:		mrtg
 Version:	2.9.17
-Release:	4
+Release:	5
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
@@ -26,10 +29,18 @@ The Multi Router Traffic Grapher (MRTG) is a tool to monitor the
 traffic load on network-links. MRTG generates HTML pages containing
 PNG images which provide a LIVE visual representation of this traffic.
 
+%description -l es
+Herramienta para hacer gráficos de empleo en la red.
+
 %description -l pl
 Multi Router Traffic Grapher (MRTG) to narzêdzie s³u¿±ce do
 monitorowania obci±¿enia ³±cz sieciowych. MRTG generuje strony HTML
 zawieraj±ce obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
+
+%description -l pt_BR
+O MRTG é uma ferramenta parar monitorar o tráfego de links de rede.
+Ele gera páginas HTML contendo imagens GIF que provêm uma sensação
+realística deste gráfico.
 
 %prep
 %setup -q
