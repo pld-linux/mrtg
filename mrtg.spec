@@ -10,6 +10,7 @@ Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
+# Source0-md5:	17ae5e4cdd69a8995e3a861f6a00e153
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Patch0:		%{name}.path.patch
