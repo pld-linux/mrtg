@@ -107,7 +107,7 @@ rm -rf lib/mrtg2/Pod
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT{/var/log/mrtg,/var/log/archiv/mrtg}
+	$RPM_BUILD_ROOT{/var/log/{mrtg,archiv/mrtg},/var/run/mrtg}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
@@ -165,6 +165,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/mrtg/*
 %attr(751,root,root) %dir /var/log/mrtg
 %attr(751,root,root) %dir /var/log/archiv/mrtg
+%dir /var/run/mrtg
 %{_mandir}/man1/*
 
 %files cron
