@@ -6,7 +6,7 @@ Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.9.27
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
@@ -119,7 +119,7 @@ install %SOURCE2 $RPM_BUILD_ROOT%{_initrddir}/mrtg
 if [ -f /var/lock/subsys/mrtg ]; then
 	/etc/rc.d/init.d/mrtg restart >&2
 else
-	echo "Run \"/etc/rc.d/init.d/mrtg start\" to start mysql." >&2
+	echo "Run \"/etc/rc.d/init.d/mrtg start\" to start mrtg." >&2
 fi
 
 %preun init
