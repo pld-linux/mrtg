@@ -56,12 +56,12 @@ rm -rf lib/mrtg2/Pod
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/httpd/html/mrtg} \
+install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/services/httpd/html/mrtg} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib},%{_mandir}/man1}
 
 install %SOURCE1 $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
-ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
-install images/* $RPM_BUILD_ROOT/home/httpd/html/mrtg/
+ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/services/httpd/html/mrtg/mrtg.cfg
+install images/* $RPM_BUILD_ROOT/home/services/httpd/html/mrtg/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
@@ -75,7 +75,7 @@ gzip -9nf contrib.tar
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg %{_sysconfdir}/mrtg/mrtg.cfg
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_libdir}/mrtg/indexmaker --title 'Statistics' --prefix '.' --output /home/httpd/html/mrtg/index.html %{_sysconfdir}/mrtg/mrtg.cfg 2> /dev/null
+*/5 * * * * root umask 022; /bin/nice -n 19 %{_libdir}/mrtg/indexmaker --title 'Statistics' --prefix '.' --output /home/services/httpd/html/mrtg/index.html %{_sysconfdir}/mrtg/mrtg.cfg 2> /dev/null
 EOF
 
 %clean
@@ -84,10 +84,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc contrib.tar.gz doc/*.txt
-%dir /home/httpd/html/mrtg
+%dir /home/services/httpd/html/mrtg
 %dir %{_libdir}/mrtg
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
-%attr(644,root,root) /home/httpd/html/mrtg/*
+%attr(644,root,root) /home/services/httpd/html/mrtg/*
 %attr(644,root,root) %{perl_sitelib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
