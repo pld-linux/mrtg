@@ -5,11 +5,12 @@ Name:		mrtg
 Version:	2.9.0
 Release:	1
 Group:		Applications/Networking
+Group(de):	Applikationen/Netzwerkwesen
 Group(pl):	Aplikacje/Sieciowe
-Copyright:	GPL
+License:	GPL
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
-Source1:	mrtg.cfg
-Patch:		mrtg.path.patch
+Source1:	%{name}.cfg
+Patch0:		%{name}.path.patch
 Url:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 Requires:	perl >= 5.004
 Requires:	/etc/cron.d
@@ -19,21 +20,20 @@ BuildRequires:	libpng >= 1.0.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-The Multi Router Traffic Grapher (MRTG) is a tool to monitor the traffic
-load on network-links. MRTG generates HTML pages containing PNG
-images which provide a LIVE visual representation of this traffic.
+The Multi Router Traffic Grapher (MRTG) is a tool to monitor the
+traffic load on network-links. MRTG generates HTML pages containing
+PNG images which provide a LIVE visual representation of this traffic.
 
 %description -l pl
-Multi Router Traffic Grapher (MRTG) to narzêdzie s³u¿±ce do monitorowania
-obci±¿enia ³±cz sieciowych. MRTG generuje strony HTML zawieraj±ce
-obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
+Multi Router Traffic Grapher (MRTG) to narzêdzie s³u¿±ce do
+monitorowania obci±¿enia ³±cz sieciowych. MRTG generuje strony HTML
+zawieraj±ce obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
 
 %prep
 %setup -q
 %patch -p1 -b .path
 
 %build
-LDFLAGS="-s"; export LDFLAGS
 %configure
 %{__make}
 
@@ -43,8 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/httpd/html/mrtg} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%perl_sitearch}
 
-install	%SOURCE1 $RPM_BUILD_ROOT/etc/mrtg
-ln -s   ../../../../etc/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
+install %SOURCE1 $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
+ln -s ../../../..%{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
 install images/* $RPM_BUILD_ROOT/home/httpd/html/mrtg/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
@@ -56,7 +56,7 @@ gzip -9nf contrib.tar doc/*.txt
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; %{_bindir}/mrtg /home/httpd/html/mrtg/mrtg.cfg
-*/5 * * * * root umask 022; %{_libdir}/mrtg/indexmaker -t 'Statistics' -r '.' -o /home/httpd/html/mrtg/index.html /etc/mrtg/mrtg.cfg
+*/5 * * * * root umask 022; %{_libdir}/mrtg/indexmaker -t 'Statistics' -r '.' -o /home/httpd/html/mrtg/index.html %{_sysconfdir}/mrtg/mrtg.cfg
 EOF
 
 %clean
@@ -67,7 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc contrib.tar.gz doc/*.txt.gz doc/*.cfg.gz
 %dir /home/httpd/html/mrtg
 %dir %{_libdir}/mrtg
-%config(noreplace) /etc/mrtg/mrtg.cfg
+%config(noreplace) %{_sysconfdir}/mrtg/mrtg.cfg
 %attr(644,root,root) /home/httpd/html/mrtg/*
 %attr(644,root,root) %perl_sitearch/*.pm
 %attr(755,root,root) %{_bindir}/*
