@@ -24,8 +24,8 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/mrtg ]; then
-		msg_starting mrtg
 		for i in $CONFIGS; do
+		    msg_starting "mrtg ($CONFIGDIR/$i)"
 		    daemon mrtg $CONFIGDIR/$i --daemon --logging /var/log/mrtg/$i.log
 		done
 		RETVAL=$?
