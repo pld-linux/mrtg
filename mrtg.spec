@@ -57,7 +57,7 @@ aclocal
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/httpd/html/mrtg} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib}}
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib},%{_mandir}/man1}
 
 install %SOURCE1 $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
@@ -67,6 +67,8 @@ install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
 install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_sitelib}
 install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_sitelib}
+install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1/
+
 
 tar -cf contrib.tar contrib
 gzip -9nf contrib.tar
@@ -89,4 +91,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root) %{perl_sitelib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
+%{_mandir}/man1/*
 %config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/mrtg
