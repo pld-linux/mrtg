@@ -1,7 +1,7 @@
 Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
-Version:	2.6.6
+Version:	2.7.4b
 Release:	1
 Group:		Applications/Network
 Group(pl):	Aplikacje/Sieæ
