@@ -10,4 +10,3 @@ diff -ur mrtg-2.9.18.org/Makefile.in mrtg-2.9.18/Makefile.in
  	for x in $(top_srcdir)/lib/mrtg2/*.pm; do \
  	  $(INSTALL) -m 644 $$x $(prefix)/lib/mrtg2; done
  	for x in $(top_srcdir)/lib/mrtg2/Pod/*.pm; do \
-Only in mrtg-2.9.18: Makefile.in~
