@@ -57,7 +57,7 @@ realística deste gráfico.
 
 %package cron
 Summary:	Files that allow running mrtg via crond
-Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg via crond.
+Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z crona
 Group:		Applications/Networking
 Requires:	/etc/cron.d
 Requires:	mrtg
@@ -68,11 +68,11 @@ Obsoletes:	mrtg-start
 Files that allow running mrtg via crond.
 
 %description cron -l pl
-Pliki pozwalaj±ce uruchamiaæ mrtg via crond.
+Pliki pozwalaj±ce uruchamiaæ mrtg z crona.
 
 %package init
 Summary:	Files that allow running mrtg via rc-scripts
-Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg via rc-scripts.
+Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	/etc/cron.d
@@ -84,7 +84,7 @@ Obsoletes:	mrtg-start
 Files that allow running mrtg via rc-scripts.
 
 %description init -l pl
-Pliki pozwalaj±ce uruchamiaæ mrtg via rc-scripts.
+Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts.
 
 %prep
 %setup -q
@@ -107,13 +107,13 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
-install images/* $RPM_BUILD_ROOT%{_htmldir}/
+install images/* $RPM_BUILD_ROOT%{_htmldir}
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
 install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_vendorlib}
-install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1/
+install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
 
 tar -cf contrib.tar contrib
 
