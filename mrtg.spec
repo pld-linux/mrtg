@@ -50,15 +50,15 @@ ln -s   /etc/mrtg.cfg	$RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
 install images/*        $RPM_BUILD_ROOT/home/httpd/html/mrtg/
 install run/cfgmaker	$RPM_BUILD_ROOT%{_libdir}/mrtg
 install run/indexmaker  $RPM_BUILD_ROOT%{_libdir}/mrtg
-install run/mrtg        $RPM_BUILD_ROOT/usr/bin
-install -s run/rateup   $RPM_BUILD_ROOT/usr/bin
+install run/mrtg        $RPM_BUILD_ROOT%{_bindir}
+install -s run/rateup   $RPM_BUILD_ROOT%{_bindir}
 install run/*.pm        $RPM_BUILD_ROOT/$installarchlib
 
 tar -cf contrib.tar contrib
 gzip -9nf contrib.tar doc/*.txt doc/*.cfg
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/crontab.d/mrtg
-*/5 * * * * root umask 022; /usr/bin/mrtg /home/httpd/html/mrtg/mrtg.cfg
+*/5 * * * * root umask 022; %{_bindir}/mrtg /home/httpd/html/mrtg/mrtg.cfg
 EOF
 
 %clean
@@ -72,7 +72,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) /etc/mrtg.cfg
 %attr(644,root,root) /home/httpd/html/mrtg/*
 %attr(644,root,root) %{_libdir}/perl5/*/*/*.pm
-%attr(755,root,root) /usr/bin/*
+%attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
 %attr(640,root,root) /etc/crontab.d/mrtg
 
