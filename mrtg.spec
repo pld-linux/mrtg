@@ -6,8 +6,6 @@ Version:	2.9.17
 Release:	4
 License:	GPL
 Group:		Applications/Networking
-Group(de):	Applikationen/Netzwerkwesen
-Group(pl):	Aplikacje/Sieciowe
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
 Source1:	%{name}.cfg
 Patch0:		%{name}.path.patch
