@@ -56,7 +56,7 @@ gzip -9nf contrib.tar doc/*.txt doc/*.cfg
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/crontab.d/mrtg
 */5 * * * * root umask 022; %{_bindir}/mrtg /home/httpd/html/mrtg/mrtg.cfg
-*/5 * * * * root umask 022; %{_libdir}/indexmaker -t 'Statistics' -r '.' -o /home/httpd/html/mrtg/index.html /etc/mrtg.cfg
+*/5 * * * * root umask 022; %{_libdir}/mrtg/indexmaker -t 'Statistics' -r '.' -o /home/httpd/html/mrtg/index.html /etc/mrtg.cfg
 EOF
 
 %clean
