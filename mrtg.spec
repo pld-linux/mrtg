@@ -11,26 +11,25 @@ Summary(pl):	MRTG - generator obrazów obci±¿enia ³±cz
 Summary(pt_BR):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru):	MRTG - ÐÒÏÇÒÁÍÍÁ ÉÚÏÂÒÁÖÅÎÉÑ ÇÒÁÆÆÉËÏ×, ÉÚÏÂÒÁÖÁÀÝÉÈ ÔÒÁÆÆÉË ÎÁ ÍÎÏÖÅÓÔ×Å ÒÏÕÔÅÒÏ×
 Name:		mrtg
-Version:	2.10.14
-Release:	2
+Version:	2.10.15
+Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
-# Source0-md5:	f5c8acfd7cef7a8894ee65e573819cc4
+# Source0-md5:	39f3afeac9a7fdba8e4e500313234e50
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
 Source4:	%{name}.logrotate
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
-Patch2:		%{name}-typos.patch
 URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gd-devel >= 2.0.1
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl-devel >= 1:5.8.0
-BuildRequires:	perl-SNMP_Session
+BuildRequires:	perl-SNMP_Session >= 1.04
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rrdtool
 PreReq:		rc-scripts >= 0.2.0
@@ -95,7 +94,6 @@ Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts.
 %patch0 -p1
 #%patch1 -p1
 rm -rf lib/mrtg2/Pod
-%patch2 -p1
 
 %build
 %{__aclocal}
