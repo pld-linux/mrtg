@@ -34,7 +34,7 @@ CFLAGS="$RPM_OPT_FLAGS -I$installarchlib/CORE" \
 ./configure %{_target} \
 	--prefix=/usr \
 	--with-gd-lib=%{_libdir} \
-	--with-gd-inc=/usr/include
+	--with-gd-inc=%{_includedir}
 make
 
 %install
