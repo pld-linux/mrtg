@@ -14,9 +14,12 @@ Patch0:		%{name}.path.patch
 Url:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 Requires:	perl >= 5.004
 Requires:	/etc/cron.d
+Requires:	perl-PodParser
+Requires:	rrdtool
 BuildRequires:	gd-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng >= 1.0.8
+BuildRequires:	perl => 5.004
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
