@@ -5,12 +5,12 @@ Summary(pl):	MRTG - generator obrazСw obci╠©enia Ё╠cz
 Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
-Version:	2.10.11
+Version:	2.10.12
 Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
-# Source0-md5:	50de22d6a6566fa3366f96cd9cbe382b
+# Source0-md5:	a83d13e6c3fd8f42d2f633ee7ed54e02
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Patch0:		%{name}.path.patch
