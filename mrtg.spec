@@ -3,7 +3,7 @@ Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.8.12
-Release:	1
+Release: 2
 Group:		Applications/Networking
 Group(pl):	Aplikacje/Sieciowe
 Copyright:	GPL
@@ -15,7 +15,7 @@ Requires:	perl >= 5.004
 Requires:	/etc/cron.d
 BuildRequires:	gd-devel
 BuildRequires:	zlib-devel
-BuildRequires:  libpng-devel
+BuildRequires:	libpng >= 1.0.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
