@@ -16,17 +16,18 @@ Source2:	%{name}.init
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
 URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
-PreReq:		rc-scripts >= 0.2.0
-Requires:	mrtg-start
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	gd-devel >= 2.0.1
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl-devel >= 5.6.1
 BuildRequires:	perl(SNMP_Session)
 BuildRequires:	rrdtool
-BuildRequires:	autoconf
-BuildRequires:	automake
-
+PreReq:		rc-scripts >= 0.2.0
+Requires:	mrtg-start
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_htmldir	/home/services/httpd/html/mrtg
 
 %description
 The Multi Router Traffic Grapher (MRTG) is a tool to monitor the
@@ -52,8 +53,8 @@ Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg via crond.
 Group:		Applications/Networking
 Requires:	/etc/cron.d
 Requires:	mrtg
-Obsoletes:	mrtg-start
 Provides:	mrtg-start
+Obsoletes:	mrtg-start
 
 %description cron
 Files that allow running mrtg via crond.
@@ -65,11 +66,11 @@ Pliki pozwalaj±ce uruchamiaæ mrtg via crond.
 Summary:	Files that allow running mrtg via rc-scripts
 Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg via rc-scripts.
 Group:		Daemons
+Requires(post,preun):	/sbin/chkconfig
 Requires:	/etc/cron.d
 Requires:	mrtg
-Obsoletes:	mrtg-start
 Provides:	mrtg-start
-Requires(post,preun):	/sbin/chkconfig
+Obsoletes:	mrtg-start
 
 %description init
 Files that allow running mrtg via rc-scripts.
@@ -91,12 +92,13 @@ rm -rf lib/mrtg2/Pod
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/services/httpd/html/mrtg} \
+install -d $RPM_BUILD_ROOT{/etc/cron.d,etc/mrtg,%{_htmldir},%{_initrddir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1}
 
-install %SOURCE1 $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
-ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/services/httpd/html/mrtg/mrtg.cfg
-install images/* $RPM_BUILD_ROOT/home/services/httpd/html/mrtg/
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
+install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
+ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
+install images/* $RPM_BUILD_ROOT%{_htmldir}/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
@@ -104,16 +106,12 @@ install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1/
 
-
 tar -cf contrib.tar contrib
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg %{_sysconfdir}/mrtg/mrtg.cfg
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_libdir}/mrtg/indexmaker --title 'Statistics' --prefix '.' --output /home/services/httpd/html/mrtg/index.html %{_sysconfdir}/mrtg/mrtg.cfg 2> /dev/null
+*/5 * * * * root umask 022; /bin/nice -n 19 %{_libdir}/mrtg/indexmaker --title 'Statistics' --prefix '.' --output %{_htmldir}/index.html %{_sysconfdir}/mrtg/mrtg.cfg 2> /dev/null
 EOF
-
-install -d $RPM_BUILD_ROOT%{_initrddir}
-install %SOURCE2 $RPM_BUILD_ROOT%{_initrddir}/mrtg
 
 %post init
 /sbin/chkconfig --add mrtg
@@ -137,11 +135,11 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc contrib.tar doc/*.txt
-%dir /home/services/httpd/html/mrtg
+%dir %{_htmldir}
 %dir %{_libdir}/mrtg
 %attr(751,root,root) %dir %{_sysconfdir}/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
-%attr(644,root,root) /home/services/httpd/html/mrtg/*
+%attr(644,root,root) %{_htmldir}/*
 %attr(644,root,root) %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
