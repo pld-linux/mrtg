@@ -153,7 +153,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/mrtg
 %attr(751,root,root) %dir %{_sysconfdir}/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/mrtg
 %attr(644,root,root) %{_htmldir}/*
 %attr(644,root,root) %{perl_vendorlib}/*.pm
@@ -169,4 +168,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files init
 %defattr(644,root,root,755)
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/mrtg
 %attr(754,root,root) %{_initrddir}/mrtg
