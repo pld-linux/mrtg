@@ -13,9 +13,8 @@ Source1:	%{name}.cfg
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
 BuildRequires:	gd-devel
-BuildRequires:	zlib-devel
 BuildRequires:	libpng >= 1.0.8
-BuildRequires:	perl => 5.004
+BuildRequires:	perl-devel >= 5.6.1
 URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 Requires:	/etc/cron.d
 BuildRequires:	rrdtool
