@@ -15,7 +15,7 @@ Source1:	%{name}.cfg
 Source2:	%{name}.init
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
-URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
+URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gd-devel >= 2.0.1
