@@ -63,6 +63,7 @@ Requires:	/etc/cron.d
 Requires:	mrtg
 Provides:	mrtg-start
 Obsoletes:	mrtg-start
+Obsoletes:	mrtg-init
 
 %description cron
 Files that allow running mrtg via crond.
@@ -79,6 +80,7 @@ Requires:	/etc/cron.d
 Requires:	mrtg
 Provides:	mrtg-start
 Obsoletes:	mrtg-start
+Obsoletes:	mrtg-cron
 
 %description init
 Files that allow running mrtg via rc-scripts.
