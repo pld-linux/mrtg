@@ -1,7 +1,7 @@
 Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
-Version:	2.8.6
+Version:	2.8.8
 Release:	1
 Group:		Applications/Networking
 Group(pl):	Aplikacje/Sieciowe
@@ -32,6 +32,7 @@ obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
 %patch -p1 -b .path
 
 %build
+LDFLAGS="-s"; export LDFLAGS
 %configure
 make
 
@@ -47,9 +48,8 @@ install	%SOURCE1				$RPM_BUILD_ROOT/etc
 ln -s   /etc/mrtg.cfg				$RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
 install images/*				$RPM_BUILD_ROOT/home/httpd/html/mrtg/
 install run/{cfgmaker,cfgmaker_ip,indexmaker}	$RPM_BUILD_ROOT%{_libdir}/mrtg
-install -s run/rateup				$RPM_BUILD_ROOT%{_bindir}
-install run/mrtg				$RPM_BUILD_ROOT%{_bindir}
-install run/*.pm				$RPM_BUILD_ROOT/%perl_sitearch
+install run/{rateup,mrtg}			$RPM_BUILD_ROOT%{_bindir}
+install run/*.pm				$RPM_BUILD_ROOT/%{perl_sitearch}
 
 tar -cf contrib.tar contrib
 gzip -9nf contrib.tar doc/*.txt doc/*.cfg
