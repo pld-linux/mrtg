@@ -2,7 +2,7 @@
 Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
-Version:	2.9.1
+Version:	2.9.2
 Release:	1
 Group:		Applications/Networking
 Group(de):	Applikationen/Netzwerkwesen
@@ -52,7 +52,7 @@ install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
 install lib/mrtg2/*.pm $RPM_BUILD_ROOT/%{perl_sitearch}
 
 tar -cf contrib.tar contrib
-gzip -9nf contrib.tar doc/*.txt
+gzip -9nf contrib.tar
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; %{_bindir}/mrtg /home/httpd/html/mrtg/mrtg.cfg
@@ -64,7 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc contrib.tar.gz doc/*.txt.gz doc/*.cfg.gz
+%doc contrib.tar.gz doc/*.txt doc/*.cfg
 %dir /home/httpd/html/mrtg
 %dir %{_libdir}/mrtg
 %config(noreplace) %{_sysconfdir}/mrtg/mrtg.cfg
