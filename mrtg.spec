@@ -1,3 +1,7 @@
+# TODO:
+# - accept multiple config definition in /etc/sysconfig/mrtg by cron-started
+#   mrtg. Thats why sysconfig file is in main package.
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
 Summary(es):	Herramienta para hacer grАficos de empleo en la red
@@ -6,13 +10,14 @@ Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.10.12
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
 # Source0-md5:	a83d13e6c3fd8f42d2f633ee7ed54e02
 Source1:	%{name}.cfg
 Source2:	%{name}.init
+Source3:	%{name}.sysconfig
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
 URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
@@ -92,11 +97,12 @@ rm -rf lib/mrtg2/Pod
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/cron.d,%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
+install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
 install images/* $RPM_BUILD_ROOT%{_htmldir}/
 
@@ -139,6 +145,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/mrtg
 %attr(751,root,root) %dir %{_sysconfdir}/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/mrtg
 %attr(644,root,root) %{_htmldir}/*
 %attr(644,root,root) %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
