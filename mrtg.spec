@@ -9,11 +9,11 @@ Version:	2.9.27
 Release:	1
 License:	GPL
 Group:		Applications/Networking
-Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
+Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
 Source1:	%{name}.cfg
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
-URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
+URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 BuildRequires:	gd-devel >= 2.0.1
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl-devel >= 5.6.1
