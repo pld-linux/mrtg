@@ -1,4 +1,5 @@
 Summary:	Multi Router Traffic Grapher
+Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.6.6
 Release:	1
@@ -6,13 +7,12 @@ Group:		Applications/Network
 Group(pl):	Aplikacje/Sieæ
 Copyright:	distributable
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
-Url:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 Source1:	mrtg.cfg
 Patch:		mrtg.path.patch
+Url:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 Requires:	perl >= 5.004
 Requires:	/etc/crontab.d
-Buildroot:	/var/tmp/buildroot-%{name}-%{version}
-Summary(pl):	MRTG
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 The Multi Router Traffic Grapher (MRTG) is a tool to monitor the traffic
@@ -62,16 +62,16 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc contrib.tar.gz doc/*.txt.gz doc/*.cfg.gz
 %dir /home/httpd/html/mrtg
-%dir /usr/lib/
+%dir /usr/lib/mrtg
 %config(noreplace) /etc/mrtg.cfg
-%attr(644, root, root) /home/httpd/html/mrtg/*
-%attr(644, root, root) /usr/lib/perl5/*/*/*.pm
-%attr(755, root, root) /usr/bin/*
-%attr(755, root, root) /usr/lib/mrtg/*
-%attr(640, root, root) /etc/crontab.d/mrtg
+%attr(644,root,root) /home/httpd/html/mrtg/*
+%attr(644,root,root) /usr/lib/perl5/*/*/*.pm
+%attr(755,root,root) /usr/bin/*
+%attr(755,root,root) /usr/lib/mrtg/*
+%attr(640,root,root) /etc/crontab.d/mrtg
 
 %changelog
 * Sat Feb 27 1999 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
