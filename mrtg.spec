@@ -29,13 +29,12 @@ URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gd-devel >= 2.0.1
-BuildRequires:	libpng >= 1.0.8
+BuildRequires:	libpng-devel >= 1.0.8
+BuildRequires:	perl-SNMP_Session >= 1.05
 BuildRequires:	perl-devel >= 1:5.8.0
-BuildRequires:	perl-SNMP_Session >= 1.04
 BuildRequires:	rpm-perlprov >= 4.1-13
-BuildRequires:	rrdtool
 PreReq:		rc-scripts >= 0.2.0
-Requires:	perl(SNMP_util) >= 0.97
+Requires:	perl(SNMP_util) >= 1.04
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_htmldir	/home/services/httpd/html/mrtg
