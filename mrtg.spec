@@ -99,7 +99,7 @@ rm -rf lib/mrtg2/Pod
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib},%{_mandir}/man1}
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
@@ -109,8 +109,8 @@ install images/* $RPM_BUILD_ROOT%{_htmldir}/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
-install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_sitelib}
-install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_sitelib}
+install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_vendorlib}
+install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1/
 
 tar -cf contrib.tar contrib
@@ -148,7 +148,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/mrtg
 %attr(644,root,root) %{_htmldir}/*
-%attr(644,root,root) %{perl_sitelib}/*.pm
+%attr(644,root,root) %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
 %{_mandir}/man1/*
