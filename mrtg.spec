@@ -3,7 +3,7 @@ Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.9.10 
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Group(de):	Applikationen/Netzwerkwesen
@@ -18,6 +18,7 @@ BuildRequires:	perl => 5.004
 URL:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 %requires_eq    perl
 Requires:	/etc/cron.d
+BuildRequires:	rrdtool
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
