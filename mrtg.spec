@@ -75,7 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc contrib.tar.gz doc/*.txt
 %dir /home/httpd/html/mrtg
 %dir %{_libdir}/mrtg
-%config(noreplace) %{_sysconfdir}/mrtg/mrtg.cfg
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
 %attr(644,root,root) /home/httpd/html/mrtg/*
 %attr(644,root,root) %{perl_sitelib}/*.pm
 %attr(755,root,root) %{_bindir}/*
