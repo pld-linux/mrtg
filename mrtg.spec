@@ -46,7 +46,7 @@ install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/httpd/html/mrtg} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib}}
 
 install %SOURCE1 $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
-ln -s ../../../..%{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
+ln -s %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
 install images/* $RPM_BUILD_ROOT/home/httpd/html/mrtg/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
