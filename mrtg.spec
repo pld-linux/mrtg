@@ -2,7 +2,7 @@ Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.8.8
-Release:	2
+Release:	3
 Group:		Applications/Networking
 Group(pl):	Aplikacje/Sieciowe
 Copyright:	GPL
@@ -11,7 +11,7 @@ Source1:	mrtg.cfg
 Patch:		mrtg.path.patch
 Url:		http://www.ee.ethz.ch/~oetiker/webtools/mrtg/mrtg.html
 Requires:	perl >= 5.004
-Requires:	/etc/crontab.d
+Requires:	/etc/cron.d
 BuildRequires:	gd-devel
 BuildRequires:	zlib-devel
 BuildRequires:  libpng-devel
@@ -39,22 +39,21 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/{etc/crontab.d,home/httpd/html/mrtg}
-install -d $RPM_BUILD_ROOT%{_bindir}
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}
-install -d $RPM_BUILD_ROOT/%perl_sitearch
+install -d $RPM_BUILD_ROOT/{etc/cron.d,home/httpd/html/mrtg} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%perl_sitearch}
 
-install	%SOURCE1				$RPM_BUILD_ROOT/etc
-ln -s   /etc/mrtg.cfg				$RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
-install images/*				$RPM_BUILD_ROOT/home/httpd/html/mrtg/
-install run/{cfgmaker,cfgmaker_ip,indexmaker}	$RPM_BUILD_ROOT%{_libdir}/mrtg
-install run/{rateup,mrtg}			$RPM_BUILD_ROOT%{_bindir}
-install run/*.pm				$RPM_BUILD_ROOT/%{perl_sitearch}
+install	%SOURCE1 $RPM_BUILD_ROOT/etc
+ln -s   /etc/mrtg.cfg $RPM_BUILD_ROOT/home/httpd/html/mrtg/mrtg.cfg
+install images/* $RPM_BUILD_ROOT/home/httpd/html/mrtg/
+
+install run/{cfgmaker,cfgmaker_ip,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
+install run/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
+install run/*.pm $RPM_BUILD_ROOT/%{perl_sitearch}
 
 tar -cf contrib.tar contrib
 gzip -9nf contrib.tar doc/*.txt doc/*.cfg
 
-cat  << EOF > $RPM_BUILD_ROOT/etc/crontab.d/mrtg
+cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; %{_bindir}/mrtg /home/httpd/html/mrtg/mrtg.cfg
 */5 * * * * root umask 022; %{_libdir}/mrtg/indexmaker -t 'Statistics' -r '.' -o /home/httpd/html/mrtg/index.html /etc/mrtg.cfg
 EOF
@@ -72,4 +71,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root) %perl_sitearch/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
-%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/crontab.d/mrtg
+%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/mrtg
