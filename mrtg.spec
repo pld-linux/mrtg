@@ -12,7 +12,7 @@ Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.10.15
-Release:	1
+Release:	1.1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
@@ -21,6 +21,8 @@ Source1:	%{name}.cfg
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
 Source4:	%{name}.logrotate
+Source5:	%{name}.cron
+Source6:	%{name}-indexmaker.cron
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
 URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
@@ -111,6 +113,8 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d/mrtg
+install %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}/mrtg-cronjob
+install %{SOURCE6} $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
 install images/* $RPM_BUILD_ROOT%{_htmldir}
 
@@ -123,8 +127,8 @@ install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
 tar -cf contrib.tar contrib
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg %{_sysconfdir}/mrtg/mrtg.cfg
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_libdir}/mrtg/indexmaker --title 'Statistics' --prefix '.' --output %{_htmldir}/index.html %{_sysconfdir}/mrtg/mrtg.cfg 2> /dev/null
+*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg-cronjob
+*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/indexmaker-cronjob 2> /dev/null
 EOF
 
 %post init
