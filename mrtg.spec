@@ -1,6 +1,9 @@
 # TODO:
 # - accept multiple config definition in /etc/sysconfig/mrtg by cron-started
 #   mrtg. Thats why sysconfig file is in main package.
+# - start mrtg daemon as non-root user (configurable, because root is required
+#   for some sort of stats
+# - logrotate file
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
@@ -10,7 +13,7 @@ Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.10.12
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
@@ -99,7 +102,7 @@ rm -rf lib/mrtg2/Pod
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1}
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1,/var/log/mrtg}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
@@ -151,6 +154,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root) %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
+%attr(751,root,root) %dir /var/log/mrtg
+%attr(751,root,root) %dir /var/log/archiv/mrtg
 %{_mandir}/man1/*
 
 %files cron
