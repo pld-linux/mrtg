@@ -3,8 +3,8 @@ Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.7.4b
 Release:	1
-Group:		Applications/Network
-Group(pl):	Aplikacje/Sieæ
+Group:		Applications/Networking
+Group(pl):	Aplikacje/Sieciowe
 Copyright:	distributable
 Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
 Source1:	mrtg.cfg
