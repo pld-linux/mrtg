@@ -6,7 +6,7 @@ Summary(pt_BR):	Ferramenta para fazer grАficos do uso da rede
 Summary(ru):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.9.27
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
@@ -57,7 +57,7 @@ rm -rf lib/mrtg2/Pod
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{etc/cron.d,etc/mrtg,home/services/httpd/html/mrtg} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib},%{_mandir}/man1}
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1}
 
 install %SOURCE1 $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT/home/services/httpd/html/mrtg/mrtg.cfg
@@ -65,8 +65,8 @@ install images/* $RPM_BUILD_ROOT/home/services/httpd/html/mrtg/
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
-install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_sitelib}
-install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_sitelib}
+install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_vendorlib}
+install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1/
 
 
@@ -88,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(751,root,root) %dir %{_sysconfdir}/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
 %attr(644,root,root) /home/services/httpd/html/mrtg/*
-%attr(644,root,root) %{perl_sitelib}/*.pm
+%attr(644,root,root) %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
 %{_mandir}/man1/*
