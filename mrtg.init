@@ -26,7 +26,7 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/mrtg ]; then
 		msg_starting mrtg
 		for i in $CONFIGS; do
-		    daemon mrtg $CONFIGDIR/$i --logging /var/log/mrtg/$i.log
+		    daemon mrtg $CONFIGDIR/$i --daemon --logging /var/log/mrtg/$i.log
 		done
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
