@@ -1,0 +1,12 @@
+# Customized setings for mrtg daemon
+
+# Define nice level for mrtg
+SERVICE_RUN_NICE_LEVEL="+5"
+
+# Define configs directory:
+#Default:
+#CONFIGDIR="/etc/mrtg"
+
+# Define multiple configs, separated with space
+# Default:
+#CONFIGS="mrtg.cfg"
