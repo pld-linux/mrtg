@@ -3,7 +3,6 @@
 #   mrtg. Thats why sysconfig file is in main package.
 # - start mrtg daemon as non-root user (configurable, because root is required
 #   for some sort of stats
-# - logrotate file
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
