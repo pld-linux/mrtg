@@ -72,4 +72,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root) %perl_sitearch/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
-%attr(640,root,root) /etc/crontab.d/mrtg
+%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/crontab.d/mrtg
