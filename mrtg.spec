@@ -27,10 +27,10 @@ BuildRequires:	gd-devel >= 2.0.1
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl-devel >= 5.6.1
 BuildRequires:	perl(SNMP_Session)
-BuildRequires:	perl(SNMP_util) >= 0.97
 BuildRequires:	rrdtool
 PreReq:		rc-scripts >= 0.2.0
 Requires:	mrtg-start
+Requires:	perl(SNMP_util) >= 0.97
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_htmldir	/home/httpd/html/mrtg
