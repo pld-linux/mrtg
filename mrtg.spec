@@ -3,7 +3,7 @@ Summary:	Multi Router Traffic Grapher
 Summary(pl):	MRTG
 Name:		mrtg
 Version:	2.9.17
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Networking
 Group(de):	Applikationen/Netzwerkwesen
@@ -12,7 +12,7 @@ Source0:	http://www.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar
 Source1:	%{name}.cfg
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
-BuildRequires:	gd-devel
+BuildRequires:	gd-devel >= 2.0.1
 BuildRequires:	libpng >= 1.0.8
 BuildRequires:	perl-devel >= 5.6.1
 BuildRequires:	perl(SNMP_Session)
@@ -38,6 +38,8 @@ zawieraj±ce obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
 rm -rf lib/mrtg2/Pod
 
 %build
+aclocal
+autoconf
 %configure
 %{__make}
 
