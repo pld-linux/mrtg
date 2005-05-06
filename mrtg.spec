@@ -104,12 +104,12 @@ rm -rf lib/mrtg2/Pod
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
+install -d $RPM_BUILD_ROOT{/etc/{cron.d,rc.d/init.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg,%{_htmldir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT{/var/log/{mrtg,archiv/mrtg},/var/run/mrtg}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
-install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/mrtg
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d/mrtg
 install %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}/mrtg-cronjob
@@ -130,6 +130,9 @@ cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/indexmaker-cronjob 2> /dev/null
 EOF
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %post init
 /sbin/chkconfig --add mrtg
 if [ -f /var/lock/subsys/mrtg ]; then
@@ -146,18 +149,15 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del mrtg
 fi
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(644,root,root,755)
 %doc contrib.tar doc/*.txt
 %dir %{_htmldir}
 %dir %{_libdir}/mrtg
 %attr(751,root,root) %dir %{_sysconfdir}/mrtg
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/mrtg
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/mrtg.cfg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/mrtg
 %attr(644,root,root) %{_htmldir}/*
 %attr(644,root,root) %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
@@ -169,8 +169,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files cron
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/cron.d/mrtg
 
 %files init
 %defattr(644,root,root,755)
-%attr(754,root,root) %{_initrddir}/mrtg
+%attr(754,root,root) /etc/rc.d/init.d/mrtg
