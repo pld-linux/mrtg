@@ -15,7 +15,7 @@ Version:	2.12.1
 Release:	1
 License:	GPL
 Group:		Applications/Networking
-Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
+Source0:	http://people.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
 # Source0-md5:	60b5681ace5ff66dab1f4eab2b2366e2
 Source1:	%{name}.cfg
 Source2:	%{name}.init
