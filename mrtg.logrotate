@@ -1,0 +1,7 @@
+/var/log/mrtg/*.log {
+    olddir /var/log/archiv/mrtg
+    weekly
+    notifempty
+    missingok
+}
+

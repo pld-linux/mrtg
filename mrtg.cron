@@ -1,0 +1,15 @@
+#!/bin/sh
+#########
+# Cron-job that can use many configs
+#########
+
+# Initial values:
+CONFIGDIR="/etc/mrtg"
+CONFIGS="mrtg.cfg"
+
+# Get service config
+[ -f /etc/sysconfig/mrtg ] && . /etc/sysconfig/mrtg
+
+for i in ${CONFIGS}; do
+	/usr/bin/mrtg ${CONFIGDIR}/${i} --logging /var/log/mrtg/$i.log
+done

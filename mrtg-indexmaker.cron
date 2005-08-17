@@ -1,0 +1,17 @@
+#!/bin/sh
+#########
+# Cron-job that can use many configs
+#########
+
+# Initial values:
+CONFIGDIR="/etc/mrtg"
+CONFIGS="mrtg.cfg"
+
+# Get service config
+[ -f /etc/sysconfig/mrtg ] && . /etc/sysconfig/mrtg
+
+for i in ${CONFIGS}; do
+	/usr/lib/mrtg/indexmaker --title 'Statistics' --prefix '.' \
+		--output /home/services/httpd/html/mrtg/index-${i}.html \
+		${CONFIGDIR}/${i}
+done
