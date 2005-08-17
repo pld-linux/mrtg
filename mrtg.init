@@ -25,7 +25,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/mrtg ]; then
 		for i in $CONFIGS; do
-		    msg_starting "mrtg ($CONFIGDIR/$i)"
+		    msg_starting "mrtg ($i)"
 		    daemon mrtg $CONFIGDIR/$i --daemon \
 		    	--logging /var/log/mrtg/$i.log \
 			--pid-file=/var/run/mrtg/$i.pid
