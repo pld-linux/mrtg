@@ -3,7 +3,6 @@
 #   mrtg. Thats why sysconfig file is in main package.
 # - start mrtg daemon as non-root user (configurable, because root is required
 #   for some sort of stats
-# - logrotate file
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
@@ -12,27 +11,30 @@ Summary(pl):	MRTG - generator obrazów obci±¿enia ³±cz
 Summary(pt_BR):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru):	MRTG - ÐÒÏÇÒÁÍÍÁ ÉÚÏÂÒÁÖÅÎÉÑ ÇÒÁÆÆÉËÏ×, ÉÚÏÂÒÁÖÁÀÝÉÈ ÔÒÁÆÆÉË ÎÁ ÍÎÏÖÅÓÔ×Å ÒÏÕÔÅÒÏ×
 Name:		mrtg
-Version:	2.10.13
-Release:	2
+Version:	2.12.2
+Release:	1
 License:	GPL
 Group:		Applications/Networking
-Source0:	http://people.ee.ethz.ch/~oetiker/webtools/%{name}/pub/%{name}-%{version}.tar.gz
-# Source0-md5:	978f2b55d74e6485662c9bd9a65c2f23
+Source0:	http://people.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
+# Source0-md5:	dd74c4f28ac594938d15dc16b7f88bd2
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
+Source4:	%{name}.logrotate
+Source5:	%{name}.cron
+Source6:	%{name}-indexmaker.cron
 Patch0:		%{name}.path.patch
 Patch1:		%{name}-use-perl-pod.patch
 URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gd-devel >= 2.0.1
-BuildRequires:	libpng >= 1.0.8
-BuildRequires:	perl-devel >= 5.6.1
-BuildRequires:	perl(SNMP_Session)
-BuildRequires:	rrdtool
+BuildRequires:	libpng-devel >= 1.0.8
+BuildRequires:	perl-SNMP_Session >= 1.05
+BuildRequires:	perl-devel >= 1:5.6.1
+BuildRequires:	rpm-perlprov >= 4.0.2-104
 PreReq:		rc-scripts >= 0.2.0
-Requires:	perl(SNMP_util) >= 0.97
+Requires:	perl(SNMP_util) >= 1.04
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_htmldir	/home/httpd/html/mrtg
@@ -57,39 +59,41 @@ realística deste gráfico.
 
 %package cron
 Summary:	Files that allow running mrtg via crond
-Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg via crond.
+Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z crona
 Group:		Applications/Networking
 Requires:	/etc/cron.d
 Requires:	mrtg
 Provides:	mrtg-start
 Obsoletes:	mrtg-start
+Obsoletes:	mrtg-init
 
 %description cron
 Files that allow running mrtg via crond.
 
 %description cron -l pl
-Pliki pozwalaj±ce uruchamiaæ mrtg via crond.
+Pliki pozwalaj±ce uruchamiaæ mrtg z crona.
 
 %package init
 Summary:	Files that allow running mrtg via rc-scripts
-Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg via rc-scripts.
+Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	/etc/cron.d
 Requires:	mrtg
 Provides:	mrtg-start
 Obsoletes:	mrtg-start
+Obsoletes:	mrtg-cron
 
 %description init
 Files that allow running mrtg via rc-scripts.
 
 %description init -l pl
-Pliki pozwalaj±ce uruchamiaæ mrtg via rc-scripts.
+Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts.
 
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 rm -rf lib/mrtg2/Pod
 
 %build
@@ -100,27 +104,34 @@ rm -rf lib/mrtg2/Pod
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/{cron.d,sysconfig},%{_sysconfdir}/mrtg,%{_htmldir},%{_initrddir}} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib},%{_mandir}/man1,/var/log/mrtg,/var/log/archiv/mrtg}
+install -d $RPM_BUILD_ROOT{/etc/{cron.d,rc.d/init.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg,%{_htmldir}} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_sitelib},%{_mandir}/man1} \
+	$RPM_BUILD_ROOT{/var/log/{mrtg,archiv/mrtg},/var/run/mrtg}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
-install %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/mrtg
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/mrtg
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d/mrtg
+install %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}/mrtg-cronjob
+install %{SOURCE6} $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
-install images/* $RPM_BUILD_ROOT%{_htmldir}/
+install images/* $RPM_BUILD_ROOT%{_htmldir}
 
 install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
 install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_sitelib}
 install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_sitelib}
-install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1/
+install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
 
 tar -cf contrib.tar contrib
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg %{_sysconfdir}/mrtg/mrtg.cfg
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_libdir}/mrtg/indexmaker --title 'Statistics' --prefix '.' --output %{_htmldir}/index.html %{_sysconfdir}/mrtg/mrtg.cfg 2> /dev/null
+*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg-cronjob
+*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/indexmaker-cronjob 2> /dev/null
 EOF
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post init
 /sbin/chkconfig --add mrtg
@@ -138,29 +149,28 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del mrtg
 fi
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(644,root,root,755)
 %doc contrib.tar doc/*.txt
 %dir %{_htmldir}
 %dir %{_libdir}/mrtg
 %attr(751,root,root) %dir %{_sysconfdir}/mrtg
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mrtg/mrtg.cfg
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/mrtg.cfg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/mrtg
 %attr(644,root,root) %{_htmldir}/*
 %attr(644,root,root) %{perl_sitelib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
 %attr(751,root,root) %dir /var/log/mrtg
 %attr(751,root,root) %dir /var/log/archiv/mrtg
+%dir /var/run/mrtg
 %{_mandir}/man1/*
 
 %files cron
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/mrtg
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/cron.d/mrtg
 
 %files init
 %defattr(644,root,root,755)
-%attr(754,root,root) %{_initrddir}/mrtg
+%attr(754,root,root) /etc/rc.d/init.d/mrtg
