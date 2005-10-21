@@ -19,12 +19,14 @@ CONFIGS="mrtg.cfg"
 # Get service config
 [ -f /etc/sysconfig/mrtg ] && . /etc/sysconfig/mrtg
 
-if [[ "$LANG" == *[Uu][Tt][Ff]-8 ]]; then
-	export LANG=${LANG%.[Uu][Tt][Ff]-8}
-fi
-if [[ "$LC_ALL" == *[Uu][Tt][Ff]-8 ]]; then
-	export LC_ALL=${LC_ALL%.[Uu][Tt][Ff]-8}
-fi
+# mrtg doesn't work in utf-8 locale
+for k in LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
+	LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION LC_ALL; do
+	eval v=$`echo $k`
+	if [[ "$v" == *[Uu][Tt][Ff]-8 ]]; then
+		eval export $k=\${$k%.[Uu][Tt][Ff]-8}
+	fi
+done
 
 # See how we were called.
 case "$1" in
