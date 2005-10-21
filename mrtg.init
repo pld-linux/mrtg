@@ -19,6 +19,16 @@ CONFIGS="mrtg.cfg"
 # Get service config
 [ -f /etc/sysconfig/mrtg ] && . /etc/sysconfig/mrtg
 
+if (echo "$LANG" | grep -qi "UTF-8"); then
+    LANG=$(echo "$LANG" | sed -i -e 's#\.UTF-8#g')
+    export LANG
+fi
+if (echo "$LC_ALL" | grep -qi "UTF-8"); then
+    LC_ALL=$(echo "$LC_ALL" | sed -i -e 's#\.UTF-8#g')
+    export LC_ALL
+fi
+    
+
 # See how we were called.
 case "$1" in
   start)
