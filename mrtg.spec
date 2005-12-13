@@ -33,8 +33,8 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	perl-SNMP_Session >= 1.05
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
-PreReq:		rc-scripts >= 0.2.0
 Requires:	perl(SNMP_util) >= 1.04
+Requires:	rc-scripts >= 0.2.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_htmldir	/home/services/httpd/html/mrtg
