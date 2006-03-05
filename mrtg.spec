@@ -33,6 +33,7 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	perl-SNMP_Session >= 1.05
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	perl(SNMP_util) >= 1.04
 Requires:	rc-scripts >= 0.2.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -61,11 +62,11 @@ realística deste gráfico.
 Summary:	Files that allow running mrtg via crond
 Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z crona
 Group:		Applications/Networking
-Requires:	/etc/cron.d
+Requires:	crondaemon
 Requires:	mrtg
 Provides:	mrtg-start
-Obsoletes:	mrtg-start
 Obsoletes:	mrtg-init
+Obsoletes:	mrtg-start
 
 %description cron
 Files that allow running mrtg via crond.
@@ -78,11 +79,11 @@ Summary:	Files that allow running mrtg via rc-scripts
 Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
-Requires:	/etc/cron.d
+Requires:	crondaemon
 Requires:	mrtg
 Provides:	mrtg-start
-Obsoletes:	mrtg-start
 Obsoletes:	mrtg-cron
+Obsoletes:	mrtg-start
 
 %description init
 Files that allow running mrtg via rc-scripts.
@@ -135,17 +136,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post init
 /sbin/chkconfig --add mrtg
-if [ -f /var/lock/subsys/mrtg ]; then
-	/etc/rc.d/init.d/mrtg restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/mrtg start\" to start mrtg." >&2
-fi
+%service mrtg restart
 
 %preun init
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/mrtg ]; then
-		/etc/rc.d/init.d/mrtg stop
-	fi
+	%service mrtg stop
 	/sbin/chkconfig --del mrtg
 fi
 
