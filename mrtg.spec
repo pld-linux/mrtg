@@ -157,8 +157,8 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/mrtg.cfg
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/mrtg
-%attr(644,root,root) %{_htmldir}/*
-%attr(644,root,root) %{perl_vendorlib}/*.pm
+%{_htmldir}/*
+%{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
 %attr(751,root,root) %dir /var/log/mrtg
