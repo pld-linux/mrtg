@@ -1,4 +1,5 @@
 # TODO:
+# - update _htmldir (/usr/share for static data, /var/lib for generated)
 # - accept multiple config definition in /etc/sysconfig/mrtg by cron-started
 #   mrtg. Thats why sysconfig file is in main package.
 # - start mrtg daemon as non-root user (configurable, because root is required
