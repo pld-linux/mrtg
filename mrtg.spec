@@ -7,10 +7,10 @@
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
-Summary(es):	Herramienta para hacer gráficos de empleo en la red
-Summary(pl):	MRTG - generator obrazów obci±¿enia ³±cz
-Summary(pt_BR):	Ferramenta para fazer gráficos do uso da rede
-Summary(ru):	MRTG - ĞÒÏÇÒÁÍÍÁ ÉÚÏÂÒÁÖÅÎÉÑ ÇÒÁÆÆÉËÏ×, ÉÚÏÂÒÁÖÁÀİÉÈ ÔÒÁÆÆÉË ÎÁ ÍÎÏÖÅÓÔ×Å ÒÏÕÔÅÒÏ×
+Summary(es.UTF-8):   Herramienta para hacer grÃ¡ficos de empleo en la red
+Summary(pl.UTF-8):   MRTG - generator obrazÃ³w obciÄ…Å¼enia Å‚Ä…cz
+Summary(pt_BR.UTF-8):   Ferramenta para fazer grÃ¡ficos do uso da rede
+Summary(ru.UTF-8):   MRTG - Ğ¿Ñ€Ğ¾Ğ³Ñ€Ğ°Ğ¼Ğ¼Ğ° Ğ¸Ğ·Ğ¾Ğ±Ñ€Ğ°Ğ¶ĞµĞ½Ğ¸Ñ Ğ³Ñ€Ğ°Ñ„Ñ„Ğ¸ĞºĞ¾Ğ², Ğ¸Ğ·Ğ¾Ğ±Ñ€Ğ°Ğ¶Ğ°ÑÑ‰Ğ¸Ñ… Ñ‚Ñ€Ğ°Ñ„Ñ„Ğ¸Ğº Ğ½Ğ° Ğ¼Ğ½Ğ¾Ğ¶ĞµÑÑ‚Ğ²Ğµ Ñ€Ğ¾ÑƒÑ‚ĞµÑ€Ğ¾Ğ²
 Name:		mrtg
 Version:	2.13.2
 Release:	2
@@ -48,22 +48,22 @@ The Multi Router Traffic Grapher (MRTG) is a tool to monitor the
 traffic load on network-links. MRTG generates HTML pages containing
 PNG images which provide a LIVE visual representation of this traffic.
 
-%description -l es
-Herramienta para hacer gráficos de empleo en la red.
+%description -l es.UTF-8
+Herramienta para hacer grÃ¡ficos de empleo en la red.
 
-%description -l pl
-Multi Router Traffic Grapher (MRTG) to narzêdzie s³u¿±ce do
-monitorowania obci±¿enia ³±cz sieciowych. MRTG generuje strony HTML
-zawieraj±ce obrazki PNG przedstawiaj±ce aktualne obci±¿enie ³±cz.
+%description -l pl.UTF-8
+Multi Router Traffic Grapher (MRTG) to narzÄ™dzie sÅ‚uÅ¼Ä…ce do
+monitorowania obciÄ…Å¼enia Å‚Ä…cz sieciowych. MRTG generuje strony HTML
+zawierajÄ…ce obrazki PNG przedstawiajÄ…ce aktualne obciÄ…Å¼enie Å‚Ä…cz.
 
-%description -l pt_BR
-O MRTG é uma ferramenta parar monitorar o tráfego de links de rede.
-Ele gera páginas HTML contendo imagens GIF que provêm uma sensação
-realística deste gráfico.
+%description -l pt_BR.UTF-8
+O MRTG Ã© uma ferramenta parar monitorar o trÃ¡fego de links de rede.
+Ele gera pÃ¡ginas HTML contendo imagens GIF que provÃªm uma sensaÃ§Ã£o
+realÃ­stica deste grÃ¡fico.
 
 %package cron
 Summary:	Files that allow running mrtg via crond
-Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z crona
+Summary(pl.UTF-8):   Pliki pozwalajÄ…ce uruchamiaÄ‡ mrtg z crona
 Group:		Applications/Networking
 Requires:	crondaemon
 Requires:	mrtg
@@ -74,12 +74,12 @@ Obsoletes:	mrtg-start
 %description cron
 Files that allow running mrtg via crond.
 
-%description cron -l pl
-Pliki pozwalaj±ce uruchamiaæ mrtg z crona.
+%description cron -l pl.UTF-8
+Pliki pozwalajÄ…ce uruchamiaÄ‡ mrtg z crona.
 
 %package init
 Summary:	Files that allow running mrtg via rc-scripts
-Summary(pl):	Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts
+Summary(pl.UTF-8):   Pliki pozwalajÄ…ce uruchamiaÄ‡ mrtg z poziomu rc-scripts
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	crondaemon
@@ -91,8 +91,8 @@ Obsoletes:	mrtg-start
 %description init
 Files that allow running mrtg via rc-scripts.
 
-%description init -l pl
-Pliki pozwalaj±ce uruchamiaæ mrtg z poziomu rc-scripts.
+%description init -l pl.UTF-8
+Pliki pozwalajÄ…ce uruchamiaÄ‡ mrtg z poziomu rc-scripts.
 
 %prep
 %setup -q
