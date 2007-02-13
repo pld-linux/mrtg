@@ -7,10 +7,10 @@
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
-Summary(es.UTF-8):   Herramienta para hacer gráficos de empleo en la red
-Summary(pl.UTF-8):   MRTG - generator obrazów obciążenia łącz
-Summary(pt_BR.UTF-8):   Ferramenta para fazer gráficos do uso da rede
-Summary(ru.UTF-8):   MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
+Summary(es.UTF-8):	Herramienta para hacer gráficos de empleo en la red
+Summary(pl.UTF-8):	MRTG - generator obrazów obciążenia łącz
+Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
+Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.13.2
 Release:	2
@@ -63,7 +63,7 @@ realística deste gráfico.
 
 %package cron
 Summary:	Files that allow running mrtg via crond
-Summary(pl.UTF-8):   Pliki pozwalające uruchamiać mrtg z crona
+Summary(pl.UTF-8):	Pliki pozwalające uruchamiać mrtg z crona
 Group:		Applications/Networking
 Requires:	crondaemon
 Requires:	mrtg
@@ -79,7 +79,7 @@ Pliki pozwalające uruchamiać mrtg z crona.
 
 %package init
 Summary:	Files that allow running mrtg via rc-scripts
-Summary(pl.UTF-8):   Pliki pozwalające uruchamiać mrtg z poziomu rc-scripts
+Summary(pl.UTF-8):	Pliki pozwalające uruchamiać mrtg z poziomu rc-scripts
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	crondaemon
