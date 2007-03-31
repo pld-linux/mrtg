@@ -16,7 +16,7 @@ Version:	2.13.2
 Release:	2
 License:	GPL
 Group:		Applications/Networking
-Source0:	http://people.ee.ethz.ch/~oetiker/webtools/mrtg/pub/%{name}-%{version}.tar.gz
+Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
 # Source0-md5:	daab44b14d608cda831b4dc481cec38a
 Source1:	%{name}.cfg
 Source2:	%{name}.init
@@ -28,7 +28,7 @@ Patch0:		%{name}.path.patch
 # FIXME: apply? remove?
 Patch1:		%{name}-use-perl-pod.patch
 Patch2:		%{name}-unrouted_VLAN.patch
-URL:		http://people.ee.ethz.ch/~oetiker/webtools/mrtg/
+URL:		http://oss.oetiker.ch/mrtg/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gd-devel >= 2.0.1
