@@ -12,12 +12,12 @@ Summary(pl.UTF-8):	MRTG - generator obrazów obciążenia łącz
 Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
-Version:	2.13.2
-Release:	2
+Version:	2.15.1
+Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
-# Source0-md5:	daab44b14d608cda831b4dc481cec38a
+# Source0-md5:	32f5c62c0b6fc9b2f9cb00fe3098811d
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
@@ -27,7 +27,6 @@ Source6:	%{name}-indexmaker.cron
 Patch0:		%{name}.path.patch
 # FIXME: apply? remove?
 Patch1:		%{name}-use-perl-pod.patch
-Patch2:		%{name}-unrouted_VLAN.patch
 URL:		http://oss.oetiker.ch/mrtg/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -99,7 +98,6 @@ Pliki pozwalające uruchamiać mrtg z poziomu rc-scripts.
 %patch0 -p1
 # FIXME: apply? remove?
 #%patch1 -p1
-%patch2 -p1
 rm -rf lib/mrtg2/Pod
 
 %build
