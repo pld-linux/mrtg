@@ -13,7 +13,7 @@ Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.15.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
@@ -110,7 +110,7 @@ rm -rf lib/mrtg2/Pod
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{cron.d,rc.d/init.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg,%{_htmldir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT{/var/log/{mrtg,archiv/mrtg},/var/run/mrtg}
+	$RPM_BUILD_ROOT{/var/log/{mrtg,archive/mrtg},/var/run/mrtg}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/mrtg
