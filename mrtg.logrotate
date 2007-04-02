@@ -1,5 +1,5 @@
 /var/log/mrtg/*.log {
-    olddir /var/log/archiv/mrtg
+    olddir /var/log/archive/mrtg
     weekly
     notifempty
     missingok
