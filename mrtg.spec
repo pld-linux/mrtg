@@ -161,7 +161,7 @@ fi
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/mrtg/*
 %attr(751,root,root) %dir /var/log/mrtg
-%attr(751,root,root) %dir /var/log/archiv/mrtg
+%attr(751,root,root) %dir /var/log/archive/mrtg
 %dir /var/run/mrtg
 %{_mandir}/man1/*
 
