@@ -41,7 +41,7 @@ start() {
 						--logging /var/log/mrtg/${f}.log \
 						--pid-file=/var/run/mrtg/${f}.pid \
 						--lock-file=/var/run/mrtg/${f}_l \
-						--confcache-file=/var/run/mrtg/${f}.ok
+						--confcache-file=/var/lib/mrtg/${f}.ok
 				fi
 			done
 		else
@@ -56,7 +56,7 @@ start() {
 						--logging /var/log/mrtg/$i.log \
 						--pid-file=/var/run/mrtg/$i.pid \
 						--lock-file=/var/run/mrtg/${f}_l \
-						--confcache-file=/var/run/mrtg/${f}.ok
+						--confcache-file=/var/lib/mrtg/${f}.ok
 				fi
 			done
 		fi
