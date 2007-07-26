@@ -13,8 +13,7 @@
 RETVAL=0
 
 # Initial values:
-CONFIGDIR="/etc/mrtg"
-CONFIGS="mrtg.cfg"
+CONFIGDIR="/etc/mrtg/conf.d"
 DAEMON_USER="stats"
 
 # Get service config
@@ -29,25 +28,46 @@ for k in LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
 	fi
 done
 
-# See how we were called.
-case "$1" in
-  start)
-	# Check if the service is already running?
+start() {
 	if [ ! -f /var/lock/subsys/mrtg ]; then
-		for i in $CONFIGS; do
-			msg_starting "mrtg ($i)"
-			daemon --user ${DAEMON_USER} mrtg $CONFIGDIR/$i --daemon \
-			--logging /var/log/mrtg/$i.log \
-			--pid-file=/var/run/mrtg/$i.pid
-		done
+		if [ ! "${CONFIGS}" ]; then
+			for file in ${CONFIGDIR}/*.cfg; do
+				f=`basename ${file}`
+				run_cmd "Checking MRTG configuration: ${f}" mrtg --check ${file}
+				RETVAL=$?
+				if [ $RETVAL -eq 0 ]; then
+					msg_starting "mrtg (${f})"
+						daemon --user ${DAEMON_USER} mrtg ${file} --daemon \
+						--logging /var/log/mrtg/${f}.log \
+						--pid-file=/var/run/mrtg/${f}.pid \
+						--lock-file=/var/run/mrtg/${f}_l \
+						--confcache-file=/var/run/mrtg/${f}.ok
+				fi
+			done
+		else
+			echo "WARNING: using obsolete CONFIGS definition."
+			echo "WARNIGN: look at /etc/sysconfig/mrtg for hints."
+			for i in $CONFIGS; do
+				run_cmd "Checking MRTG configuration: ${i}" mrtg --check ${i}
+				RETVAL=$?
+				if [ $RETVAL -eq 0 ]; then
+					msg_starting "mrtg ($i)"
+						daemon --user ${DAEMON_USER} mrtg $CONFIGDIR/$i --daemon \
+						--logging /var/log/mrtg/$i.log \
+						--pid-file=/var/run/mrtg/$i.pid \
+						--lock-file=/var/run/mrtg/${f}_l \
+						--confcache-file=/var/run/mrtg/${f}.ok
+				fi
+			done
+		fi
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
 	else
 		msg_already_running mrtg
 	fi
-	;;
-  stop)
-	# Stop daemons.
+}
+
+stop() {
 	if [ -f /var/lock/subsys/mrtg ]; then
 		msg_stopping mrtg
 		killproc mrtg
@@ -55,10 +75,20 @@ case "$1" in
 	else
 		msg_not_running mrtg
 	fi
+}
+
+
+# See how we were called.
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
 	;;
   restart)
-	$0 stop
-	$0 start
+	stop
+	start
 	exit $?
 	;;
   reload|force-reload)

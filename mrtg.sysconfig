@@ -3,14 +3,21 @@
 # Define nice level for mrtg
 SERVICE_RUN_NICE_LEVEL="+5"
 
-# Define configs directory:
+# Define configs directory. Files (or links) *.cfg in that directory are
+# started while bringing daemon up. 
 #Default:
-#CONFIGDIR="/etc/mrtg"
-
-# Define multiple configs, separated with space
-# Default:
-#CONFIGS="mrtg.cfg"
+#CONFIGDIR="/etc/mrtg/conf.d"
 
 # Run Daemon as specific user.
 # Default: stats
 #DAEMON_USER=stats
+
+
+### OBSOLETE:
+# Define multiple configs, separated with space
+# Default:
+#CONFIGS="mrtg.cfg"
+#
+# Instead of that simply put files (or symlinks) in directory specified
+# in CONFIGDIR.
+

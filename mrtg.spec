@@ -13,7 +13,7 @@ Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.15.2
-Release:	1.1
+Release:	1.5
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
@@ -108,9 +108,9 @@ rm -rf lib/mrtg2/Pod
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/{cron.d,rc.d/init.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg,%{_htmldir}} \
+install -d $RPM_BUILD_ROOT{/etc/{cron.d,rc.d/init.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg/conf.d,%{_htmldir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT{/var/log/{mrtg,archive/mrtg},/var/run/mrtg}
+	$RPM_BUILD_ROOT{/var/log/{mrtg,archive/mrtg},/var/{lib,run}/mrtg}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/mrtg
@@ -126,6 +126,8 @@ install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
 install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
+
+ln -sf ../mrtg.cfg $RPM_BUILD_ROOT%{_sysconfdir}/mrtg/conf.d
 
 tar -cf contrib.tar contrib
 
@@ -151,7 +153,9 @@ fi
 %defattr(644,root,root,755)
 %doc contrib.tar doc/*.txt
 %attr(751,root,stats) %dir %{_sysconfdir}/mrtg
+%attr(751,root,stats) %dir %{_sysconfdir}/mrtg/conf.d
 %attr(640,root,stats) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/mrtg.cfg
+%attr(640,root,stats) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/conf.d/*
 %attr(640,root,stats) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/mrtg
 %attr(755,stats,logs) %dir %{_htmldir}
@@ -163,6 +167,7 @@ fi
 %attr(1751,stats,logs) %dir /var/log/mrtg
 %attr(751,root,logs) %dir /var/log/archive/mrtg
 %attr(755,stats,stats) %dir /var/run/mrtg
+%attr(755,stats,stats) %dir /var/lib/mrtg
 %{_mandir}/man1/*
 
 %files cron
