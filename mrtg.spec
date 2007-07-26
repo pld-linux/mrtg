@@ -2,8 +2,8 @@
 # - update _htmldir (/usr/share for static data, /var/lib for generated)
 # - accept multiple config definition in /etc/sysconfig/mrtg by cron-started
 #   mrtg. Thats why sysconfig file is in main package.
-# - start mrtg daemon as non-root user (configurable, because root is required
-#   for some sort of stats
+# - start mrtg cronjob as non-root user (configurable in sysconfig file, because
+#   root is required for some sort of stats)
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
@@ -13,7 +13,7 @@ Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.15.2
-Release:	1
+Release:	1.1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
@@ -150,19 +150,19 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc contrib.tar doc/*.txt
-%dir %{_htmldir}
-%dir %{_libdir}/mrtg
-%attr(751,root,root) %dir %{_sysconfdir}/mrtg
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/mrtg.cfg
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/mrtg
+%attr(751,root,stats) %dir %{_sysconfdir}/mrtg
+%attr(640,root,stats) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/mrtg.cfg
+%attr(640,root,stats) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/mrtg
+%attr(755,stats,logs) %dir %{_htmldir}
 %{_htmldir}/*
 %{perl_vendorlib}/*.pm
 %attr(755,root,root) %{_bindir}/*
+%dir %{_libdir}/mrtg
 %attr(755,root,root) %{_libdir}/mrtg/*
-%attr(751,root,root) %dir /var/log/mrtg
-%attr(751,root,root) %dir /var/log/archive/mrtg
-%dir /var/run/mrtg
+%attr(1751,stats,logs) %dir /var/log/mrtg
+%attr(751,root,logs) %dir /var/log/archive/mrtg
+%attr(755,stats,stats) %dir /var/run/mrtg
 %{_mandir}/man1/*
 
 %files cron

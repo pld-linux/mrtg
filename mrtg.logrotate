@@ -1,7 +1,8 @@
 /var/log/mrtg/*.log {
-    olddir /var/log/archive/mrtg
-    weekly
-    notifempty
-    missingok
+	olddir /var/log/archive/mrtg
+	create 640 stats logs
+	weekly
+	notifempty
+	missingok
 }
 

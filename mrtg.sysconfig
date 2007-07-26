@@ -10,3 +10,7 @@ SERVICE_RUN_NICE_LEVEL="+5"
 # Define multiple configs, separated with space
 # Default:
 #CONFIGS="mrtg.cfg"
+
+# Run Daemon as specific user.
+# Default: stats
+#DAEMON_USER=stats

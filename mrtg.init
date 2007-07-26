@@ -15,6 +15,7 @@ RETVAL=0
 # Initial values:
 CONFIGDIR="/etc/mrtg"
 CONFIGS="mrtg.cfg"
+DAEMON_USER="stats"
 
 # Get service config
 [ -f /etc/sysconfig/mrtg ] && . /etc/sysconfig/mrtg
@@ -35,7 +36,7 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/mrtg ]; then
 		for i in $CONFIGS; do
 			msg_starting "mrtg ($i)"
-			daemon mrtg $CONFIGDIR/$i --daemon \
+			daemon --user ${DAEMON_USER} mrtg $CONFIGDIR/$i --daemon \
 			--logging /var/log/mrtg/$i.log \
 			--pid-file=/var/run/mrtg/$i.pid
 		done
