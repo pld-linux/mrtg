@@ -28,36 +28,55 @@ for k in LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
 	fi
 done
 
+checkconfigs() {
+	for file in ${CONFIGDIR}/*.cfg; do
+		f=`basename ${file}`
+		run_cmd "Checking MRTG configuration: ${f}" mrtg --check ${file}
+		RETVAL=$?
+		if [ $RETVAL -ne 0 ]; then
+			exit 1
+		fi
+	done
+	exit 0
+}
+
+# For obsolete multiple configs - to be droped soon:
+checkconfigs_old() {
+	for file in ${CONFIGS}; do
+		run_cmd "Checking MRTG configuration: ${file}" mrtg --check ${CONFIGDIR}/${file}
+		RETVAL=$?
+		if [ $RETVAL -ne 0 ]; then
+			exit 1
+		fi
+	done
+	exit 0
+}
+
+
 start() {
 	if [ ! -f /var/lock/subsys/mrtg ]; then
 		if [ ! "${CONFIGS}" ]; then
+			checkconfigs
 			for file in ${CONFIGDIR}/*.cfg; do
 				f=`basename ${file}`
-				run_cmd "Checking MRTG configuration: ${f}" mrtg --check ${file}
-				RETVAL=$?
-				if [ $RETVAL -eq 0 ]; then
-					msg_starting "mrtg (${f})"
-						daemon --user ${DAEMON_USER} mrtg ${file} --daemon \
-						--logging /var/log/mrtg/${f}.log \
-						--pid-file=/var/run/mrtg/${f}.pid \
-						--lock-file=/var/run/mrtg/${f}_l \
-						--confcache-file=/var/lib/mrtg/${f}.ok
-				fi
+				msg_starting "mrtg (${f})"
+				daemon --user ${DAEMON_USER} mrtg ${file} --daemon \
+					--logging /var/log/mrtg/${f}.log \
+					--pid-file=/var/run/mrtg/${f}.pid \
+					--lock-file=/var/run/mrtg/${f}_l \
+					--confcache-file=/var/lib/mrtg/${f}.ok
 			done
 		else
 			echo "WARNING: using obsolete CONFIGS definition."
 			echo "WARNIGN: look at /etc/sysconfig/mrtg for hints."
+			checkconfigs_old
 			for i in $CONFIGS; do
-				run_cmd "Checking MRTG configuration: ${i}" mrtg --check ${i}
-				RETVAL=$?
-				if [ $RETVAL -eq 0 ]; then
-					msg_starting "mrtg ($i)"
-						daemon --user ${DAEMON_USER} mrtg $CONFIGDIR/$i --daemon \
-						--logging /var/log/mrtg/$i.log \
-						--pid-file=/var/run/mrtg/$i.pid \
-						--lock-file=/var/run/mrtg/${f}_l \
-						--confcache-file=/var/lib/mrtg/${f}.ok
-				fi
+				msg_starting "mrtg ($i)"
+				daemon --user ${DAEMON_USER} mrtg $CONFIGDIR/$i --daemon \
+					--logging /var/log/mrtg/$i.log \
+					--pid-file=/var/run/mrtg/$i.pid \
+					--lock-file=/var/run/mrtg/${f}_l \
+					--confcache-file=/var/lib/mrtg/${f}.ok
 			done
 		fi
 		RETVAL=$?
