@@ -37,7 +37,6 @@ checkconfigs() {
 			exit 1
 		fi
 	done
-	exit 0
 }
 
 # For obsolete multiple configs - to be droped soon:
@@ -49,7 +48,6 @@ checkconfigs_old() {
 			exit 1
 		fi
 	done
-	exit 0
 }
 
 
