@@ -1,0 +1,3 @@
+- updated to 2.8.8,
+- added passing LDFLAGS="-s" to ./cinfigure environment,
+- simplification in %install.
