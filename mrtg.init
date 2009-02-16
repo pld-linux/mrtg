@@ -55,10 +55,11 @@ start() {
 	if [ ! -f /var/lock/subsys/mrtg ]; then
 		if [ ! "${CONFIGS}" ]; then
 			checkconfigs
+			is_no "$RC_LOGGING" && closefds=--closefds
 			for file in ${CONFIGDIR}/*.cfg; do
 				f=`basename ${file}`
 				msg_starting "mrtg (${f})"
-				daemon --user ${DAEMON_USER} mrtg ${file} --daemon \
+				daemon $closefds --user ${DAEMON_USER} /usr/bin/mrtg ${file} --daemon \
 					--logging /var/log/mrtg/${f}.log \
 					--pid-file=/var/run/mrtg/${f}.pid \
 					--lock-file=/var/run/mrtg/${f}_l \
