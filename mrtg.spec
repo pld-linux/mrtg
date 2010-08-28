@@ -13,7 +13,7 @@ Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.16.4
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
@@ -133,8 +133,8 @@ ln -sf ../mrtg.cfg $RPM_BUILD_ROOT%{_sysconfdir}/mrtg/conf.d
 tar -cf contrib.tar contrib
 
 cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/mrtg-cronjob
-*/5 * * * * root umask 022; /bin/nice -n 19 %{_bindir}/indexmaker-cronjob 2> /dev/null
+*/5 * * * * stats umask 022; /bin/nice -n 19 %{_bindir}/mrtg-cronjob
+*/5 * * * * stats umask 022; /bin/nice -n 19 %{_bindir}/indexmaker-cronjob 2> /dev/null
 EOF
 
 sed -i 's#/usr/lib#%{_libdir}#' $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
