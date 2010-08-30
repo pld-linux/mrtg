@@ -11,5 +11,5 @@ CONFIGS="mrtg.cfg"
 [ -f /etc/sysconfig/mrtg ] && . /etc/sysconfig/mrtg
 
 for i in ${CONFIGS}; do
-	/usr/bin/mrtg ${CONFIGDIR}/${i} --logging /var/log/mrtg/$i.log --lock-file /var/lib/mrtg/${i}_l --confcache-file=/var/lib/mrtg/${i}.ok
+	env LANG=C /usr/bin/mrtg ${CONFIGDIR}/${i} --logging /var/log/mrtg/$i.log --lock-file /var/lib/mrtg/${i}_l --confcache-file=/var/lib/mrtg/${i}.ok
 done
