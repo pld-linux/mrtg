@@ -65,8 +65,8 @@ realística deste gráfico.
 Summary:	Files that allow running mrtg via crond
 Summary(pl.UTF-8):	Pliki pozwalające uruchamiać mrtg z crona
 Group:		Applications/Networking
+Requires:	%{name} = %{version}-%{release}
 Requires:	crondaemon
-Requires:	mrtg
 Provides:	mrtg-start
 Obsoletes:	mrtg-init
 Obsoletes:	mrtg-start
@@ -82,8 +82,8 @@ Summary:	Files that allow running mrtg via rc-scripts
 Summary(pl.UTF-8):	Pliki pozwalające uruchamiać mrtg z poziomu rc-scripts
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
+Requires:	%{name} = %{version}-%{release}
 Requires:	crondaemon
-Requires:	mrtg
 Provides:	mrtg-start
 Obsoletes:	mrtg-cron
 Obsoletes:	mrtg-start
@@ -113,20 +113,20 @@ install -d $RPM_BUILD_ROOT{/etc/{cron.d,rc.d/init.d,sysconfig,logrotate.d},%{_sy
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT{/var/log/{mrtg,archive/mrtg},/var/{lib,run}/mrtg}
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/mrtg
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d/mrtg
-install %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}/mrtg-cronjob
-install %{SOURCE6} $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
+cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
+install -p %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/mrtg
+cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/mrtg
+cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/logrotate.d/mrtg
+install -p %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}/mrtg-cronjob
+install -p %{SOURCE6} $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
-install images/* $RPM_BUILD_ROOT%{_htmldir}
+cp -a images/* $RPM_BUILD_ROOT%{_htmldir}
 
-install bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
-install bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
-install lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_vendorlib}
-install lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_vendorlib}
-install doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
+install -p bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
+install -p bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
+cp -a lib/mrtg2/locales_mrtg.pm $RPM_BUILD_ROOT%{perl_vendorlib}
+cp -a lib/mrtg2/MRTG_lib.pm $RPM_BUILD_ROOT%{perl_vendorlib}
+cp -a doc/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
 
 ln -sf ../mrtg.cfg $RPM_BUILD_ROOT%{_sysconfdir}/mrtg/conf.d
 
@@ -137,7 +137,7 @@ cat  << EOF > $RPM_BUILD_ROOT/etc/cron.d/mrtg
 */5 * * * * stats umask 022; /bin/nice -n 19 %{_bindir}/indexmaker-cronjob 2> /dev/null
 EOF
 
-sed -i 's#/usr/lib#%{_libdir}#' $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
+sed -i 's#/''usr/lib#%{_libdir}#' $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
 
 %clean
 rm -rf $RPM_BUILD_ROOT
