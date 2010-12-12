@@ -1,0 +1,4 @@
+- release 2
+- install perl stuff in perl_sitelib
+- use /etc/mrtg in cron job
+- fixed %doc
