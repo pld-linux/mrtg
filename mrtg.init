@@ -10,8 +10,6 @@
 # Source function library
 . /etc/rc.d/init.d/functions
 
-RETVAL=0
-
 # Initial values:
 CONFIGDIR="/etc/mrtg/conf.d"
 DAEMON_USER="stats"
@@ -30,7 +28,7 @@ done
 
 checkconfigs() {
 	for file in ${CONFIGDIR}/*.cfg; do
-		f=`basename ${file}`
+		f=${file##*/}
 		run_cmd "Checking MRTG configuration: ${f}" mrtg --check ${file}
 		RETVAL=$?
 		if [ $RETVAL -ne 0 ]; then
@@ -52,50 +50,65 @@ checkconfigs_old() {
 
 
 start() {
-	if [ ! -f /var/lock/subsys/mrtg ]; then
-		if [ ! "${CONFIGS}" ]; then
-			checkconfigs
-			is_no "$RC_LOGGING" && closefds=--closefds
-			for file in ${CONFIGDIR}/*.cfg; do
-				f=`basename ${file}`
-				msg_starting "mrtg (${f})"
-				daemon $closefds --user ${DAEMON_USER} /usr/bin/mrtg ${file} --daemon \
-					--logging /var/log/mrtg/${f}.log \
-					--pid-file=/var/run/mrtg/${f}.pid \
-					--lock-file=/var/run/mrtg/${f}_l \
-					--confcache-file=/var/lib/mrtg/${f}.ok
-			done
-		else
-			echo "WARNING: using obsolete CONFIGS definition."
-			echo "WARNING: look at /etc/sysconfig/mrtg for hints."
-			checkconfigs_old
-			for i in $CONFIGS; do
-				msg_starting "mrtg ($i)"
-				daemon --user ${DAEMON_USER} mrtg $CONFIGDIR/$i --daemon \
-					--logging /var/log/mrtg/$i.log \
-					--pid-file=/var/run/mrtg/$i.pid \
-					--lock-file=/var/run/mrtg/${f}_l \
-					--confcache-file=/var/lib/mrtg/${f}.ok
-			done
-		fi
-		RETVAL=$?
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
-	else
-		msg_already_running mrtg
+	if [ -f /var/lock/subsys/mrtg ]; then
+		msg_already_running "MRTG"
+		return
 	fi
+
+	if [ ! "${CONFIGS}" ]; then
+		checkconfigs
+		is_no "$RC_LOGGING" && closefds=--closefds
+		for file in ${CONFIGDIR}/*.cfg; do
+			f=${file##*/}
+			msg_starting "MRTG (${f})"
+			daemon $closefds --user ${DAEMON_USER} /usr/bin/mrtg ${file} --daemon \
+				--logging /var/log/mrtg/${f}.log \
+				--pid-file=/var/run/mrtg/${f}.pid \
+				--lock-file=/var/run/mrtg/${f}_l \
+				--confcache-file=/var/lib/mrtg/${f}.ok
+		done
+	else
+		echo "WARNING: using obsolete CONFIGS definition."
+		echo "WARNING: look at /etc/sysconfig/mrtg for hints."
+		checkconfigs_old
+		for i in $CONFIGS; do
+			msg_starting "MRTG ($i)"
+			daemon --user ${DAEMON_USER} /usr/bin/mrtg $CONFIGDIR/$i --daemon \
+				--logging /var/log/mrtg/$i.log \
+				--pid-file=/var/run/mrtg/$i.pid \
+				--lock-file=/var/run/mrtg/${f}_l \
+				--confcache-file=/var/lib/mrtg/${f}.ok
+		done
+	fi
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
 }
 
 stop() {
-	if [ -f /var/lock/subsys/mrtg ]; then
-		msg_stopping mrtg
-		killproc mrtg
-		rm -f /var/lock/subsys/mrtg /var/run/mrtg/*.pid >/dev/null 2>&1
-	else
-		msg_not_running mrtg
+	if [ ! -f /var/lock/subsys/mrtg ]; then
+		msg_not_running "MRTG"
+		return
 	fi
+
+	msg_stopping "MRTG"
+	killproc mrtg
+	rm -f /var/lock/subsys/mrtg /var/run/mrtg/*.pid >/dev/null 2>&1
+}
+
+reload() {
+	if [ ! -f /var/lock/subsys/mrtg ]; then
+		msg_not_running "MRTG"
+		RETVAL=7
+		return
+	fi
+
+	msg_reloading "MRTG"
+	killproc mrtg -HUP
+	RETVAL=$?
 }
 
 
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -107,21 +120,13 @@ case "$1" in
   restart)
 	stop
 	start
-	exit $?
 	;;
   reload|force-reload)
-	if [ -f /var/lock/subsys/mrtg ]; then
-		msg_reloading mrtg
-		killproc mrtg -HUP
-		RETVAL=$?
-	else
-		msg_not_running mrtg >&2
-		exit 7
-	fi
+	reload
 	;;
   status)
 	status mrtg
-	exit $?
+	RETVAL=$?
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
@@ -129,6 +134,3 @@ case "$1" in
 esac
 
 exit $RETVAL
-
-# This must be last line !
-# vi:syntax=sh:tw=78
