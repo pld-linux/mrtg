@@ -30,18 +30,25 @@ done
 getconfigs() {
 	if [ -z "${CONFIGS}" ]; then
 		echo ${CONFIGDIR}/*.cfg
-	else
-		echo >&2 "WARNING: Using obsolete CONFIGS definition."
-		echo >&2 "WARNING: look at /etc/sysconfig/mrtg for hints."
-		echo $CONFIGS
+		return
 	fi
+
+	echo >&2 "mrtg: WARNING: Using obsolete CONFIGS definition. look at /etc/sysconfig/mrtg for hints."
+	for file in $CONFIGS; do
+		echo ${CONFIGDIR}/${file}
+	done
 }
 
-checkconfigs() {
-	local rc file f
-	for file in "$@"; do
+CONFIGS=$(getconfigs)
+
+# configtest itself
+# must return non-zero if check failed
+# output is discarded if checkconfig is ran without details
+configtest() {
+	local RETVAL=0 rc file f
+	for file in $CONFIGS; do
 		f=${file##*/}
-		run_cmd --user "$DAEMON_USER" "Checking MRTG configuration: $file" \
+		run_cmd --user "$DAEMON_USER" "Checking: $file" \
 			mrtg --check $file \
 				--lock-file=/var/run/mrtg/${f}_l
 		rc=$?
@@ -49,8 +56,36 @@ checkconfigs() {
 			RETVAL=$rc
 		fi
 	done
-	if [ $RETVAL -ne 0 ]; then
-		exit $RETVAL
+
+	return $RETVAL
+}
+
+# wrapper for configtest
+checkconfig() {
+	local details=${1:-0}
+
+	if [ $details = 1 ]; then
+		# run config test and display report (status action)
+		show "Checking %s configuration" "MRTG"; busy
+		local out
+		out=$(configtest 2>&1)
+		RETVAL=$?
+		if [ $RETVAL = 0 ]; then
+			ok
+		else
+			fail
+		fi
+		[ "$out" ] && echo >&2 "$out"
+	else
+		# run config test and abort with nice message if failed
+		# (for actions checking status before action).
+		configtest >/dev/null 2>&1
+		RETVAL=$?
+		if [ $RETVAL != 0 ]; then
+			show "Checking %s configuration" "MRTG"; fail
+			nls 'Configuration test failed. See details with %s "checkconfig"' $0
+			exit $RETVAL
+		fi
 	fi
 }
 
@@ -60,13 +95,11 @@ start() {
 		return
 	fi
 
-	local file f closefds configs
+	checkconfig
+
+	local file f closefds
 	is_no "$RC_LOGGING" && closefds=--closefds
-
-	configs=$(getconfigs)
-	checkconfigs "$configs"
-
-	for file in $configs; do
+	for file in $CONFIGS; do
 		f=${file##*/}
 		msg_starting "MRTG ($f)"
 		daemon $closefds --user "$DAEMON_USER" /usr/bin/mrtg $file --daemon \
@@ -97,6 +130,7 @@ reload() {
 		return
 	fi
 
+	checkconfig
 	msg_reloading "MRTG"
 	killproc mrtg -HUP
 	RETVAL=$?
@@ -113,18 +147,22 @@ case "$1" in
 	stop
 	;;
   restart)
+	checkconfig
 	stop
 	start
 	;;
   reload|force-reload)
 	reload
 	;;
+  checkconfig|configtest)
+	checkconfig 1
+	;;
   status)
 	status mrtg
 	RETVAL=$?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|reload|force-reload|checkconfig|status}"
 	exit 3
 esac
 
