@@ -4,6 +4,7 @@
 #   mrtg. Thats why sysconfig file is in main package.
 # - start mrtg cronjob as non-root user (configurable in sysconfig file, because
 #   root is required for some sort of stats)
+# - (blues?) update crontabs to accept the "new" config mode as well as the daemon mode does
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
@@ -37,7 +38,6 @@ BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	perl(SNMP_util) >= 1.04
-Requires:	rc-scripts >= 0.2.0
 Conflicts:	logrotate < 3.7-4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -84,6 +84,7 @@ Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
 Requires:	crondaemon
+Requires:	rc-scripts >= 0.2.0
 Provides:	mrtg-start
 Obsoletes:	mrtg-cron
 Obsoletes:	mrtg-start
@@ -158,15 +159,17 @@ fi
 %attr(751,root,stats) %dir %{_sysconfdir}/mrtg
 %attr(751,root,stats) %dir %{_sysconfdir}/mrtg/conf.d
 %attr(640,root,stats) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/mrtg.cfg
-%attr(640,root,stats) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/conf.d/*
+%attr(640,root,stats) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/mrtg/conf.d/mrtg.cfg
 %attr(640,root,stats) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/mrtg
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/mrtg
 %attr(755,stats,logs) %dir %{_htmldir}
 %{_htmldir}/*
 %{perl_vendorlib}/*.pm
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/mrtg
+%attr(755,root,root) %{_bindir}/rateup
 %dir %{_libdir}/mrtg
-%attr(755,root,root) %{_libdir}/mrtg/*
+%attr(755,root,root) %{_libdir}/mrtg/cfgmaker
+%attr(755,root,root) %{_libdir}/mrtg/indexmaker
 %attr(1751,stats,logs) %dir /var/log/mrtg
 %attr(751,root,logs) %dir /var/log/archive/mrtg
 %attr(755,stats,stats) %dir /var/run/mrtg
@@ -176,6 +179,8 @@ fi
 %files cron
 %defattr(644,root,root,755)
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/cron.d/mrtg
+%attr(755,root,root) %{_bindir}/indexmaker-cronjob
+%attr(755,root,root) %{_bindir}/mrtg-cronjob
 
 %files init
 %defattr(644,root,root,755)
