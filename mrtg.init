@@ -27,23 +27,25 @@ for k in LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
 done
 
 checkconfigs() {
+	local rc
 	for file in ${CONFIGDIR}/*.cfg; do
 		f=${file##*/}
 		run_cmd "Checking MRTG configuration: ${f}" mrtg --check ${file}
-		RETVAL=$?
-		if [ $RETVAL -ne 0 ]; then
-			exit 1
+		rc=$?
+		if [ $rc -ne 0 -a $RETVAL -eq 0 ]; then
+			RETVAL=$rc
 		fi
 	done
 }
 
 # For obsolete multiple configs - to be droped soon:
 checkconfigs_old() {
+	local rc
 	for file in ${CONFIGS}; do
 		run_cmd "Checking MRTG configuration: ${file}" mrtg --check ${CONFIGDIR}/${file}
-		RETVAL=$?
-		if [ $RETVAL -ne 0 ]; then
-			exit 1
+		rc=$?
+		if [ $rc -ne 0 -a $RETVAL -eq 0 ]; then
+			RETVAL=$rc
 		fi
 	done
 }
