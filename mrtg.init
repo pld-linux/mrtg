@@ -26,33 +26,33 @@ for k in LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
 	fi
 done
 
-checkconfigs() {
-	local rc
-	for file in ${CONFIGDIR}/*.cfg; do
-		f=${file##*/}
-		run_cmd --user "$DAEMON_USER" "Checking MRTG configuration: ${f}" mrtg --check ${file}
-		rc=$?
-		if [ $rc -ne 0 -a $RETVAL -eq 0 ]; then
-			RETVAL=$rc
-		fi
-	done
+
+getconfigs() {
+	if [ -z "${CONFIGS}" ]; then
+		echo ${CONFIGDIR}/*.cfg
+	else
+		echo >&2 "WARNING: Using obsolete CONFIGS definition."
+		echo >&2 "WARNING: look at /etc/sysconfig/mrtg for hints."
+		echo $CONFIGS
+	fi
 }
 
-# For obsolete multiple configs - to be droped soon:
-checkconfigs_old() {
+checkconfigs() {
 	local rc file f
-	for file in ${CONFIGS}; do
+	for file in "$@"; do
 		f=${file##*/}
 		run_cmd --user "$DAEMON_USER" "Checking MRTG configuration: $file" \
-			mrtg --check ${CONFIGDIR}/$file \
-				--lock-file=/var/run/mrtg/$f_l \
+			mrtg --check $file \
+				--lock-file=/var/run/mrtg/${f}_l
 		rc=$?
 		if [ $rc -ne 0 -a $RETVAL -eq 0 ]; then
 			RETVAL=$rc
 		fi
 	done
+	if [ $RETVAL -ne 0 ]; then
+		exit $RETVAL
+	fi
 }
-
 
 start() {
 	if [ -f /var/lock/subsys/mrtg ]; then
@@ -60,33 +60,21 @@ start() {
 		return
 	fi
 
-	local file f closefds
-	if [ -z "${CONFIGS}" ]; then
-		checkconfigs
-		is_no "$RC_LOGGING" && closefds=--closefds
-		for file in ${CONFIGDIR}/*.cfg; do
-			f=${file##*/}
-			msg_starting "MRTG ($f)"
-			daemon $closefds --user "$DAEMON_USER" /usr/bin/mrtg $file --daemon \
-				--logging /var/log/mrtg/$f.log \
-				--pid-file=/var/run/mrtg/$f.pid \
-				--lock-file=/var/run/mrtg/${f}_l \
-				--confcache-file=/var/lib/mrtg/$f.ok
-		done
-	else
-		echo "WARNING: using obsolete CONFIGS definition."
-		echo "WARNING: look at /etc/sysconfig/mrtg for hints."
-		checkconfigs_old
-		for file in $CONFIGS; do
-			f=${file##*/}
-			msg_starting "MRTG ($f)"
-			daemon --user ${DAEMON_USER} /usr/bin/mrtg $CONFIGDIR/$file --daemon \
-				--logging /var/log/mrtg/$f.log \
-				--pid-file=/var/run/mrtg/$f.pid \
-				--lock-file=/var/run/mrtg/${f}_l \
-				--confcache-file=/var/lib/mrtg/$f.ok
-		done
-	fi
+	local file f closefds configs
+	is_no "$RC_LOGGING" && closefds=--closefds
+
+	configs=$(getconfigs)
+	checkconfigs "$configs"
+
+	for file in $configs; do
+		f=${file##*/}
+		msg_starting "MRTG ($f)"
+		daemon $closefds --user "$DAEMON_USER" /usr/bin/mrtg $file --daemon \
+			--logging /var/log/mrtg/$f.log \
+			--pid-file=/var/run/mrtg/$f.pid \
+			--lock-file=/var/run/mrtg/${f}_l \
+			--confcache-file=/var/lib/mrtg/$f.ok
+	done
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/mrtg
 }
