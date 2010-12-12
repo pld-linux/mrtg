@@ -40,9 +40,12 @@ checkconfigs() {
 
 # For obsolete multiple configs - to be droped soon:
 checkconfigs_old() {
-	local rc
+	local rc file f
 	for file in ${CONFIGS}; do
-		run_cmd --user "$DAEMON_USER" "Checking MRTG configuration: ${file}" mrtg --check ${CONFIGDIR}/${file}
+		f=${file##*/}
+		run_cmd --user "$DAEMON_USER" "Checking MRTG configuration: $file" \
+			mrtg --check ${CONFIGDIR}/$file \
+				--lock-file=/var/run/mrtg/$f_l \
 		rc=$?
 		if [ $rc -ne 0 -a $RETVAL -eq 0 ]; then
 			RETVAL=$rc
@@ -57,29 +60,31 @@ start() {
 		return
 	fi
 
+	local file f closefds
 	if [ -z "${CONFIGS}" ]; then
 		checkconfigs
 		is_no "$RC_LOGGING" && closefds=--closefds
 		for file in ${CONFIGDIR}/*.cfg; do
 			f=${file##*/}
-			msg_starting "MRTG (${f})"
-			daemon $closefds --user ${DAEMON_USER} /usr/bin/mrtg ${file} --daemon \
-				--logging /var/log/mrtg/${f}.log \
-				--pid-file=/var/run/mrtg/${f}.pid \
+			msg_starting "MRTG ($f)"
+			daemon $closefds --user "$DAEMON_USER" /usr/bin/mrtg $file --daemon \
+				--logging /var/log/mrtg/$f.log \
+				--pid-file=/var/run/mrtg/$f.pid \
 				--lock-file=/var/run/mrtg/${f}_l \
-				--confcache-file=/var/lib/mrtg/${f}.ok
+				--confcache-file=/var/lib/mrtg/$f.ok
 		done
 	else
 		echo "WARNING: using obsolete CONFIGS definition."
 		echo "WARNING: look at /etc/sysconfig/mrtg for hints."
 		checkconfigs_old
-		for i in $CONFIGS; do
-			msg_starting "MRTG ($i)"
-			daemon --user ${DAEMON_USER} /usr/bin/mrtg $CONFIGDIR/$i --daemon \
-				--logging /var/log/mrtg/$i.log \
-				--pid-file=/var/run/mrtg/$i.pid \
+		for file in $CONFIGS; do
+			f=${file##*/}
+			msg_starting "MRTG ($f)"
+			daemon --user ${DAEMON_USER} /usr/bin/mrtg $CONFIGDIR/$file --daemon \
+				--logging /var/log/mrtg/$f.log \
+				--pid-file=/var/run/mrtg/$f.pid \
 				--lock-file=/var/run/mrtg/${f}_l \
-				--confcache-file=/var/lib/mrtg/${f}.ok
+				--confcache-file=/var/lib/mrtg/$f.ok
 		done
 	fi
 	RETVAL=$?
