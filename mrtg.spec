@@ -84,7 +84,7 @@ Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
 Requires:	crondaemon
-Requires:	rc-scripts >= 0.2.0
+Requires:	rc-scripts >= 0.4.3.7
 Provides:	mrtg-start
 Obsoletes:	mrtg-cron
 Obsoletes:	mrtg-start

@@ -30,7 +30,7 @@ checkconfigs() {
 	local rc
 	for file in ${CONFIGDIR}/*.cfg; do
 		f=${file##*/}
-		run_cmd "Checking MRTG configuration: ${f}" mrtg --check ${file}
+		run_cmd --user "$DAEMON_USER" "Checking MRTG configuration: ${f}" mrtg --check ${file}
 		rc=$?
 		if [ $rc -ne 0 -a $RETVAL -eq 0 ]; then
 			RETVAL=$rc
@@ -42,7 +42,7 @@ checkconfigs() {
 checkconfigs_old() {
 	local rc
 	for file in ${CONFIGS}; do
-		run_cmd "Checking MRTG configuration: ${file}" mrtg --check ${CONFIGDIR}/${file}
+		run_cmd --user "$DAEMON_USER" "Checking MRTG configuration: ${file}" mrtg --check ${CONFIGDIR}/${file}
 		rc=$?
 		if [ $rc -ne 0 -a $RETVAL -eq 0 ]; then
 			RETVAL=$rc
@@ -57,7 +57,7 @@ start() {
 		return
 	fi
 
-	if [ ! "${CONFIGS}" ]; then
+	if [ -z "${CONFIGS}" ]; then
 		checkconfigs
 		is_no "$RC_LOGGING" && closefds=--closefds
 		for file in ${CONFIGDIR}/*.cfg; do
