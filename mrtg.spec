@@ -4,7 +4,6 @@
 #   mrtg. Thats why sysconfig file is in main package.
 # - start mrtg cronjob as non-root user (configurable in sysconfig file, because
 #   root is required for some sort of stats)
-# - (blues?) update crontabs to accept the "new" config mode as well as the daemon mode does
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
