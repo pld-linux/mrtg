@@ -36,6 +36,8 @@ BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	perl(SNMP_util) >= 1.04
 Conflicts:	logrotate < 3.7-4
+Suggests:	rrdtool
+Suggests:	perl-rrdtool
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_htmldir	/home/services/httpd/html/mrtg
