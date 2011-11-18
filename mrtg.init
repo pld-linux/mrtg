@@ -102,7 +102,7 @@ start() {
 	for file in $CONFIGS; do
 		f=${file##*/}
 		msg_starting "MRTG ($f)"
-		daemon $closefds --user "$DAEMON_USER" /usr/bin/mrtg $file --daemon \
+		daemon $closefds --user "$DAEMON_USER" /usr/bin/env LANG="C" /usr/bin/mrtg $file --daemon \
 			--logging /var/log/mrtg/$f.log \
 			--pid-file=/var/run/mrtg/$f.pid \
 			--lock-file=/var/run/mrtg/${f}_l \
