@@ -1,0 +1,1 @@
+d /var/run/mrtg 0755 stats stats -
