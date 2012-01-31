@@ -24,6 +24,7 @@ Source3:	%{name}.sysconfig
 Source4:	%{name}.logrotate
 Source5:	%{name}.cron
 Source6:	%{name}-indexmaker.cron
+Source7:	%{name}.tmpfiles
 Patch0:		%{name}.path.patch
 URL:		http://oss.oetiker.ch/mrtg/
 BuildRequires:	autoconf
@@ -109,7 +110,8 @@ rm -rf lib/mrtg2/Pod
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{cron.d,rc.d/init.d,sysconfig,logrotate.d},%{_sysconfdir}/mrtg/conf.d,%{_htmldir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{perl_vendorlib},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT{/var/log/{mrtg,archive/mrtg},/var/{lib,run}/mrtg}
+	$RPM_BUILD_ROOT{/var/log/{mrtg,archive/mrtg},/var/{lib,run}/mrtg} \
+	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mrtg
 install -p %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/mrtg
@@ -119,6 +121,7 @@ install -p %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}/mrtg-cronjob
 install -p %{SOURCE6} $RPM_BUILD_ROOT%{_bindir}/indexmaker-cronjob
 ln -sf %{_sysconfdir}/mrtg/mrtg.cfg $RPM_BUILD_ROOT%{_htmldir}/mrtg.cfg
 cp -a images/* $RPM_BUILD_ROOT%{_htmldir}
+install %{SOURCE7} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 install -p bin/{cfgmaker,indexmaker} $RPM_BUILD_ROOT%{_libdir}/mrtg
 install -p bin/{rateup,mrtg} $RPM_BUILD_ROOT%{_bindir}
@@ -171,6 +174,7 @@ fi
 %attr(751,root,logs) %dir /var/log/archive/mrtg
 %attr(755,stats,stats) %dir /var/run/mrtg
 %attr(755,stats,stats) %dir /var/lib/mrtg
+/usr/lib/tmpfiles.d/%{name}.conf
 %{_mandir}/man1/*
 
 %files cron
