@@ -13,7 +13,7 @@ Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
 Version:	2.17.0
-Release:	4
+Release:	5
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
@@ -171,7 +171,7 @@ fi
 %attr(755,root,root) %{_libdir}/mrtg/cfgmaker
 %attr(755,root,root) %{_libdir}/mrtg/indexmaker
 %attr(1751,stats,logs) %dir /var/log/mrtg
-%attr(751,root,logs) %dir /var/log/archive/mrtg
+%attr(751,stats,logs) %dir /var/log/archive/mrtg
 %attr(755,stats,stats) %dir /var/run/mrtg
 %attr(755,stats,stats) %dir /var/lib/mrtg
 /usr/lib/tmpfiles.d/%{name}.conf
