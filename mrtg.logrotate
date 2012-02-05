@@ -1,4 +1,5 @@
 /var/log/mrtg/*.log {
+	su stats logs
 	olddir /var/log/archive/mrtg
 	create 640 stats logs
 	notifempty
