@@ -12,12 +12,12 @@ Summary(pl.UTF-8):	MRTG - generator obrazów obciążenia łącz
 Summary(pt_BR.UTF-8):	Ferramenta para fazer gráficos do uso da rede
 Summary(ru.UTF-8):	MRTG - программа изображения граффиков, изображающих траффик на множестве роутеров
 Name:		mrtg
-Version:	2.17.0
-Release:	8
+Version:	2.17.7
+Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://oss.oetiker.ch/mrtg/pub/%{name}-%{version}.tar.gz
-# Source0-md5:	d58bd87835445a38b9b36f50dcc8f6d6
+# Source0-md5:	eada3870c0419e425299401486600d95
 Source1:	%{name}.cfg
 Source2:	%{name}.init
 Source3:	%{name}.sysconfig
