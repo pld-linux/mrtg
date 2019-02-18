@@ -1,12 +1,12 @@
 diff -dur mrtg-2.17.0.orig/bin/mrtg mrtg-2.17.0/bin/mrtg
 --- mrtg-2.17.0.orig/bin/mrtg	2010-12-15 09:15:24.000000000 +0100
 +++ mrtg-2.17.0/bin/mrtg	2013-09-19 20:55:48.281448201 +0200
-@@ -98,7 +98,7 @@
- BEGIN {
-     if (eval {local $SIG{__DIE__};require Socket6;})  {
- 	import Socket;
--	import Socket6
+@@ -305,7 +305,7 @@
+     if ($cfg{enableipv6} eq 'yes') {
+         if ( eval {local $SIG{__DIE__};require Socket; require Socket6; require IO::Socket::INET6;}) {
+             import Socket;
+-            import Socket6;
 +	Socket6->import(qw(inet_pton getaddrinfo));
-     }    
- }
- 
+             debug('base', "IPv6 libraries found, IPv6 enabled.");
+         } else {
+             warn "$NOW: WARNING: IPv6 libraries not found, IPv6 disabled.\n";
