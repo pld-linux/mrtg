@@ -5,7 +5,6 @@
 # - start mrtg cronjob as non-root user (configurable in sysconfig file, because
 #   root is required for some sort of stats)
 
-%include	/usr/lib/rpm/macros.perl
 Summary:	Multi Router Traffic Grapher
 Summary(es.UTF-8):	Herramienta para hacer gráficos de empleo en la red
 Summary(pl.UTF-8):	MRTG - generator obrazów obciążenia łącz
